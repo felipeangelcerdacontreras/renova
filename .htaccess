@@ -1,0 +1,48 @@
+#***************** Proteger el servidor con una contraseña************
+#AuthType Basic
+#AuthName "Este directorio esta protegido"
+#AuthUserFile /.htpasswd
+#Require valid-user
+
+#***************** EVITAR HOTLINK ***************************
+RewriteCond %{HTTP_REFERER} !^http://norfipc.com/.*$ [NC]
+RewriteCond %{HTTP_REFERER} !^http://norfipc.com$ [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.norfipc.com/.*$ [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.norfipc.com$ [NC]
+RewriteRule .*\.(gif|bmp|zip|swf|deb)$ - [F,NC]
+Header set Access-Control-Allow-Origin "http://localhost:50000/"
+
+#***************** BLOQUEAR LA NAVEGACION ENTRE CARPETAS ***************
+Options All -Indexes
+
+#***************** BLOQUEAR PETICIONES DEL USER-AGENT ***************
+SetEnvIfNoCase user-Agent ^FrontPage [NC,OR]
+SetEnvIfNoCase user-Agent ^Java.* [NC,OR]
+SetEnvIfNoCase user-Agent ^Microsoft.URL [NC,OR]
+SetEnvIfNoCase user-Agent ^MSFrontPage [NC,OR]
+SetEnvIfNoCase user-Agent ^Offline.Explorer [NC,OR]
+SetEnvIfNoCase user-Agent ^[Ww]eb[Bb]andit [NC,OR]
+SetEnvIfNoCase user-Agent ^Zeus [NC]
+Order Allow,Deny
+Allow from all
+Deny from env=bad_bot 
+
+#***************** CUSTOM ERRORS *********************
+ErrorDocument 400 /social/index_errors.php?error=400
+ErrorDocument 401 /social/index_errors.php?error=401
+ErrorDocument 402 /social/index_errors.php?error=402
+ErrorDocument 403 /social/index_errors.php?error=403
+ErrorDocument 404 /social/index_errors.php?error=404
+ErrorDocument 405 /social/index_errors.php?error=405
+ErrorDocument 406 /social/index_errors.php?error=406
+ErrorDocument 407 /social/index_errors.php?error=407
+ErrorDocument 408 /social/index_errors.php?error=408
+ErrorDocument 409 /social/index_errors.php?error=409
+ErrorDocument 410 /social/index_errors.php?error=410
+ErrorDocument 411 /social/index_errors.php?error=411
+ErrorDocument 412 /social/index_errors.php?error=412
+ErrorDocument 413 /social/index_errors.php?error=413
+ErrorDocument 414 /social/index_errors.php?error=414
+ErrorDocument 415 /social/index_errors.php?error=415
+ErrorDocument 416 /social/index_errors.php?error=416
+ErrorDocument 417 /social/index_errors.php?error=417

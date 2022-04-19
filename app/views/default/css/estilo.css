@@ -1,0 +1,246 @@
+/*
+    * Created by Visual Studio Code.
+ * User: ADMINC4
+ * Date: 02/07/2019
+ * Time: 11:17 PM
+*/
+@charset "utf-8";
+/* CSS Document */
+html, body {
+    margin: 0px;
+    padding: 0px;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 12px;
+    color: #333;
+    background-color: #FFF;
+}
+
+
+#divContent {
+
+}
+
+#divHeader {
+    float:center;
+    font-size: 16px;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    height: 100px;
+    color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #fff;
+
+}
+#titulo {
+    text-align: center;
+}
+
+#divBody {
+    padding: 0px;
+    min-height: 600px;
+    width: 100%;
+    background-color: #fff;
+    text-align: center;
+}
+
+input[type="text"], input[type="password"], textarea {
+    background-color: #ffffcc;
+    height: 18px;
+    border-top: #ccc solid 1px;
+    border-bottom: #ccc solid 1px;
+    border-left: #ccc solid 1px;
+    border-right: #ccc solid 1px;
+    color: #333;
+}
+
+input[disabled] {
+    background-color: #eee;
+    font-weight: bolder;
+}
+
+input[readonly] {
+    background-color: #eee;
+    font-weight: bolder;
+}
+
+select {
+    background-color: #FFC;
+    background-color: #FFC;
+    border-top: #ccc solid 1px;
+    border-bottom: #ccc solid 1px;
+    border-left: #ccc solid 1px;
+    border-right: #ccc solid 1px;
+    color: #333;
+}
+
+.progress {
+    position: relative;
+    width: 400px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+}
+
+.bar {
+    background-color: #B4F5B4;
+    width: 0%;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
+}
+
+#map-canvas {
+    width: 100%;
+    height: 400px;
+}
+
+/*
+* MENU VERTICAL CON VARIOS SUBMENUS
+*/
+#menu {
+    text-align: left;
+    margin: 0px;
+    padding: 0px;
+}
+
+#menu ul {
+    list-style-type: none;
+    float: left;
+    margin: 0px;
+    padding: 2px;
+    background-color: #00264b;
+    z-index: 1;
+}
+
+#menu ul li.nivel1 {
+    width: 180px;
+}
+
+#menu ul li.primera {
+    border-top: solid 1px #FFF;
+}
+
+#menu ul li a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    background-color: #00264b; /* COLOR LA LIGA NIVEL 1 */
+    border: solid 1px #fff;
+    border-top: none;
+    padding: 8px;
+    position: relative;
+}
+
+#menu ul li:hover {
+    position: relative;
+    background-color: #125E9D;
+    /* COLOR DE FONDO CUANDO SE PASA POR ENCIMA */
+    color: #000;
+}
+
+#menu ul li a:hover, #menu ul li:hover > a.nivel1 {
+    background-color: #125E9D;
+    /* COLOR DE FONDO CUANDO SE PASA POR ENCIMA */
+    color: #fff;
+    position: relative;
+}
+
+#menu ul li a.nivel1 {
+    display: block !important;
+    display: none;
+    position: relative;
+}
+
+#menu ul li ul {
+    display: none;
+}
+
+#menu ul li a:hover ul, #menu ul li:hover > ul {
+    display: block;
+    position: absolute;
+    left: 180px;
+    top: -10px !important;
+    top: -10px;
+}
+
+#menu ul li ul li a {
+    width: 162px;
+    background-color: #00264b; /* COLOR DE FONO SUBNIVELES*/
+    color: #fff;
+}
+
+#menu ul li ul li a:hover {
+    position: relative;
+    background-color: #21759b;
+    color: #fff;
+}
+
+/*
+* ESTILO PARA EL MENU HORIZONTAL
+*/
+* {
+    text-align: left;
+    font-family: sans-serif;
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav {
+    float: right;
+    z-index: 1;
+}
+
+.nav > li {
+    float: left;
+    z-index: 1;
+}
+
+.nav li a {
+    /* background: #00264b; */ /* PAN */
+    background: #111111; /* NEUTRO */
+    color: #FFF;
+    display: block;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+    padding: 7px 12px;
+    z-index: 1;
+}
+
+.nav li a:hover {
+    /* background: #0099ff; */ /* PAN */
+    background: #999999;
+    z-index: 1;
+}
+
+.nav li ul {
+    display: none;
+    position: absolute;
+    min-width: 140px;
+    z-index: 1;
+}
+
+.nav li:hover > ul {
+    display: block;
+    z-index: 1;
+}
+
+.nav li ul li {
+    position: relative;
+    z-index: 1;
+}
+
+.nav li ul li ul {
+    right: -140px;
+    top: 0;
+    z-index: 1;
+}

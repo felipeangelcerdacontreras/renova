@@ -1,0 +1,561 @@
+/*
+    Copyright 2015 - Geodesarrollos Soluciones S de RL de CV    
+    Author     : rafael@geodesa.com.mx 
+*/
+@charset "utf-8";
+/* CSS Document */
+html, body {
+	margin: 0px;
+	padding: 0px;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 12px;
+	color: #000;
+	background-color: #6E6E6E;
+}
+
+#divContent {
+	width: 100%;
+	text-align: left;
+	background-color:#6E6E6E;
+
+}
+
+#divHeader {
+	font-size: 16px;
+	padding: 0px;
+	margin: 0px;
+	width: 100%;
+	height: 100px;
+	color: #FFF;
+	background-image: url("../images/logo_gm_95x94.png");
+	background-repeat: no-repeat;
+	background-position:left center;
+	background-position-x: 50px;
+	background-color: #e3d7f4;
+}
+
+#divBody {
+	padding: 0px;
+	min-height: 600px;
+	width: 100%;
+	float: left;
+	background-color: #fff;
+}
+
+#divLeftMenu {
+	border-right: #999 solid 1px;
+	padding: 10px 0px;
+	width: 270px;
+	float: left;
+	min-height: 600px;
+}
+
+#divPrincipal {
+	margin-right: 250px;
+	padding: 10px;
+	min-height: 600px;
+	color:#000;
+	background-color: #fff;
+}
+
+#divRightMenu {
+	border-left: #999 solid 1px;
+	padding: 10px 0px;
+	width: 250px;
+	float: right;
+	min-height: 600px;
+	z-index: 0;
+}
+
+#divFooter {
+	padding: 20px 0px 20px 0px;
+	margin: 0px;
+	background-color: #000;
+	color: #fff;
+	text-align: center;
+	clear: both;
+}
+
+#divMenuHorizontal {
+	margin:0px;
+	padding: 0px 0px;
+	background-color:#373748;
+	color: #ccc;
+	text-align: left;
+	min-height: 45px;
+	border-bottom: #fff solid 1px;
+	z-index: 999;
+}
+
+/* cellpadding */
+th, td {
+	padding: 5px;
+}
+
+/* cellspacing */
+/* table { border-collapse: separate; border-spacing: 5px; } /* cellspacing="5" */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+} /* cellspacing="0" */
+
+/* valign */
+th, td {
+	vertical-align: middle;
+}
+
+/* align (center) */
+table {
+	margin: 0 auto;
+}
+
+.MiTabla {
+	font-size: 11px;
+	padding: 0px;
+	margin: 10px;
+	background-color: #fff;
+	border: #090 thin 1px;
+	border-radius: 13px;
+	-moz-border-radius: 13px;
+	background-color: #373748;
+}
+
+.precarga {
+	font-size: 16px;
+	padding: 80px;
+	margin: 0px;
+	width: 100%;
+	height: 100px;
+	
+	background-image: url("../images/logo_mov.gif");
+	background-repeat: no-repeat;
+	background-position:left center;
+	background-position-x: 80px;
+	
+	
+ }
+ 
+.MiTabla th {
+	margin: 0px;
+	padding: 3px;
+	color: #fff;
+	height: 25px;
+	text-align: right;
+	vertical-align: middle;
+	border-top: none;
+	border-right: none;
+	border-left: #fff solid 1px;
+	border-bottom: #fff solid 1px;
+}
+
+.MiTabla td {
+	margin: 0px;
+	padding: 5px;
+	color: #333;
+	text-align: left;
+	vertical-align: middle;
+	background-color: #fff;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: #ccc solid 1px;
+}
+
+input[type="text"], input[type="password"], textarea {
+	background-color: #ffffcc;
+	height: 18px;
+	border-top: #ccc solid 1px;
+	border-bottom: #ccc solid 1px;
+	border-left: #ccc solid 1px;
+	border-right: #ccc solid 1px;
+	color: #333;
+}
+
+input[disabled] {
+	background-color: #eee;
+	font-weight: bolder;
+}
+
+input[readonly] {
+	background-color: #eee;
+	font-weight: bolder;
+}
+
+select {
+	background-color: #FFC;
+	background-color: #FFC;
+	border-top: #ccc solid 1px;
+	border-bottom: #ccc solid 1px;
+	border-left: #ccc solid 1px;
+	border-right: #ccc solid 1px;
+	color: #333;
+}
+
+.progress {
+	position: relative;
+	width: 400px;
+	border: 1px solid #ddd;
+	padding: 1px;
+	border-radius: 3px;
+}
+
+.bar {
+	background-color: #B4F5B4;
+	width: 0%;
+	height: 20px;
+	border-radius: 3px;
+}
+
+.percent {
+	position: absolute;
+	display: inline-block;
+	top: 3px;
+	left: 48%;
+}
+
+#map-canvas {
+	width: 100%;
+	height: 400px;
+}
+
+/*
+* MENU VERTICAL CON VARIOS SUBMENUS
+*/
+#menu {
+	text-align: left;
+	margin: 0px;
+	padding: 0px;
+}
+
+#menu ul {
+	list-style-type: none;
+	float: left;
+	margin: 0px;
+	padding: 2px;
+	background-color: #00264b;
+	z-index: 999;
+}
+
+#menu ul li.nivel1 {
+	width: 180px;
+}
+
+#menu ul li.primera {
+	border-top: solid 1px #FFF;
+}
+
+#menu ul li a {
+	display: block;
+	text-decoration: none;
+	color: #fff;
+	background-color: #00264b; /* COLOR LA LIGA NIVEL 1 */
+	border: solid 1px #fff;
+	border-top: none;
+	padding: 8px;
+	position: relative;
+}
+
+#menu ul li:hover {
+	position: relative;
+	background-color: #21759b;
+	/* COLOR DE FONDO CUANDO SE PASA POR ENCIMA */
+	color: #000;
+}
+
+#menu ul li a:hover, #menu ul li:hover>a.nivel1 {
+	background-color: #21759b;
+	/* COLOR DE FONDO CUANDO SE PASA POR ENCIMA */
+	color: #fff;
+	position: relative;
+}
+
+#menu ul li a.nivel1 {
+	display: block !important;
+	display: none;
+	position: relative;
+}
+
+#menu ul li ul {
+	display: none;
+}
+
+#menu ul li a:hover ul, #menu ul li:hover>ul {
+	display: block;
+	position: absolute;
+	left: 180px;
+	top: -10px !important;
+	top: -10px;
+}
+
+#menu ul li ul li a {
+	width: 162px;
+	background-color: #00264b; /* COLOR DE FONO SUBNIVELES*/
+	color: #fff;
+}
+
+#menu ul li ul li a:hover {
+	position: relative;
+	background-color: #21759b;
+	color: #fff;
+}
+
+/*
+* ESTILO PARA EL MENU HORIZONTAL
+*/
+* {
+	text-align: left;
+	font-family: sans-serif;
+	list-style: none;
+	text-decoration: none;
+	margin: 0;
+	padding: 0;
+}
+
+.nav {
+	float: left;
+	z-index: 1;
+	font-size: 12px;
+	padding: 0px;
+}
+
+.nav>li {
+	float: left;
+	z-index: 1;
+}
+
+.nav li a {
+	padding: 7px 12px;
+	background-color:#373748;
+	color: #FFF;
+	display: block;
+	border-right: 1px solid;
+	border-bottom: 1px solid;
+	z-index: 1;
+}
+
+.nav li a:hover {
+	background:#A2A0CB;
+	z-index: 1;
+}
+
+.nav li ul {
+	display: none;
+	position: absolute;
+	min-width: 140px;
+	z-index: 1;
+}
+
+.nav li:hover>ul {
+	display: block;
+	z-index: 1;
+}
+
+.nav li ul li {
+	position: relative;
+	z-index: 1;
+}
+
+.nav li ul li ul {
+	right: -140px;
+	top: 0;
+	z-index: 1;
+}	
+
+/* Estilo para el menu radial*/
+
+.absolute-center, .menu, .menu .btn .fa, .menu .btn.trigger .line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+          transform: translateX(-50%) translateY(-50%);
+}
+
+.menu {
+  width: 5em;
+  height: 5em;
+}
+.menu .btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  opacity: 0;
+  z-index: -10;
+  cursor: pointer;
+  -webkit-transition: opacity 1s, z-index 0.3s, -webkit-transform 1s;
+  transition: opacity 1s, z-index 0.3s, -webkit-transform 1s;
+  transition: opacity 1s, z-index 0.3s, transform 1s;
+  transition: opacity 1s, z-index 0.3s, transform 1s, -webkit-transform 1s;
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+}
+.menu .btn .fa {
+  font-size: 3em;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+}
+.menu .btn:hover .fa {
+  color: rgba(255, 255, 255, 0.7);
+}
+.menu .btn.trigger {
+  opacity: 1;
+  z-index: 100;
+  cursor: pointer;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s;
+}
+.menu .btn.trigger:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+.menu .btn.trigger:hover .line {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.menu .btn.trigger:hover .line:before, .menu .btn.trigger:hover .line:after {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.menu .btn.trigger .line {
+  width: 60%;
+  height: 6px;
+  background: #000;
+  border-radius: 6px;
+  -webkit-transition: background-color 0.3s, height 0.3s, top 0.3s;
+  transition: background-color 0.3s, height 0.3s, top 0.3s;
+}
+.menu .btn.trigger .line:before, .menu .btn.trigger .line:after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: #000;
+  border-radius: 6px;
+  -webkit-transition: background-color 0.3s, -webkit-transform 0.3s;
+  transition: background-color 0.3s, -webkit-transform 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
+  transition: background-color 0.3s, transform 0.3s, -webkit-transform 0.3s;
+}
+.menu .btn.trigger .line:before {
+  top: -12px;
+  -webkit-transform-origin: 15% 100%;
+          transform-origin: 15% 100%;
+}
+.menu .btn.trigger .line:after {
+  top: 12px;
+  -webkit-transform-origin: 25% 30%;
+          transform-origin: 25% 30%;
+}
+.menu .rotater {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+}
+.menu.active .btn-icon {
+  opacity: 1;
+  z-index: 50;
+}
+.menu.active .trigger .line {
+  height: 0px;
+  top: 45%;
+}
+.menu.active .trigger .line:before {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  width: 110%;
+}
+.menu.active .trigger .line:after {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  width: 110%;
+}
+
+.rotater:nth-child(1) {
+  -webkit-transform: rotate(-22.5deg);
+          transform: rotate(-22.5deg);
+}
+
+.menu.active .rotater:nth-child(1) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(22.5deg);
+          transform: translateY(-10em) rotate(22.5deg);
+}
+
+.rotater:nth-child(2) {
+  -webkit-transform: rotate(22.5deg);
+          transform: rotate(22.5deg);
+}
+
+.menu.active .rotater:nth-child(2) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(-22.5deg);
+          transform: translateY(-10em) rotate(-22.5deg);
+}
+
+.rotater:nth-child(3) {
+  -webkit-transform: rotate(67.5deg);
+          transform: rotate(67.5deg);
+}
+
+.menu.active .rotater:nth-child(3) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(-67.5deg);
+          transform: translateY(-10em) rotate(-67.5deg);
+}
+
+.rotater:nth-child(4) {
+  -webkit-transform: rotate(112.5deg);
+          transform: rotate(112.5deg);
+}
+
+.menu.active .rotater:nth-child(4) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(-112.5deg);
+          transform: translateY(-10em) rotate(-112.5deg);
+}
+
+.rotater:nth-child(5) {
+  -webkit-transform: rotate(157.5deg);
+          transform: rotate(157.5deg);
+}
+
+.menu.active .rotater:nth-child(5) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(-157.5deg);
+          transform: translateY(-10em) rotate(-157.5deg);
+}
+
+.rotater:nth-child(6) {
+  -webkit-transform: rotate(202.5deg);
+          transform: rotate(202.5deg);
+}
+
+.menu.active .rotater:nth-child(6) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(-202.5deg);
+          transform: translateY(-10em) rotate(-202.5deg);
+}
+
+.rotater:nth-child(7) {
+  -webkit-transform: rotate(247.5deg);
+          transform: rotate(247.5deg);
+}
+
+.menu.active .rotater:nth-child(7) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(-247.5deg);
+          transform: translateY(-10em) rotate(-247.5deg);
+}
+
+.rotater:nth-child(8) {
+  -webkit-transform: rotate(292.5deg);
+          transform: rotate(292.5deg);
+}
+
+.menu.active .rotater:nth-child(8) .btn-icon {
+  -webkit-transform: translateY(-10em) rotate(-292.5deg);
+          transform: translateY(-10em) rotate(-292.5deg);
+}
