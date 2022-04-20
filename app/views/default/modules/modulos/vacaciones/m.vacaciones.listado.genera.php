@@ -43,7 +43,7 @@ $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
             $('#fecha-v' + id).prop('checked', false);
             $('#fecha-v' + id).removeAttr("name");
             $('#fecha-v' + id).removeAttr("class");
-            $('#fecha-n' + id).attr("name", "fecha_pago" + id);
+            $('#fecha-n' + id).attr("name", "fecha_pago-" + id);
             $('#fecha-n' + id).attr("class", "obligado");
         }
     }
@@ -53,76 +53,110 @@ $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
             $('#fecha-n' + id).prop('checked', false);
             $('#fecha-n' + id).removeAttr("name");
             $('#fecha-n' + id).removeAttr("class");
-            $('#fecha-v' + id).attr("name", "fecha_pago" + id);
+            $('#fecha-v' + id).attr("name", "fecha_pago-" + id);
             $('#fecha-v' + id).attr("class", "obligado");
         }
+    }
+
+    function RemoveTr(id) {
+        swal({
+            title: "¿DESEA REMOVER LA PRIMA ?",
+            text: "AL REMOVER LA PRIMA SE PODRA GENERAR LA PROXIMA NOMINA CON LA NUEVA FECHA HASTA QUE SE PAGUE",
+            icon: "warning",
+            buttons: [
+                'No',
+                'Si'
+            ],
+            dangerMode: true,
+        }).then(function(isConfirm) {
+            if (isConfirm) {
+                swal({
+                    title: 'Removido!',
+                    text: 'La prima seleccionada a sido removida',
+                    icon: 'success'
+                }).then(function() {
+                    $('#' + id).remove();
+                    num = $("#contador").val();
+                    $("#contador").val(num -1);
+                });
+            } else {
+                swal("Cancelado", "Prima no removida", "error");
+            }
+        });
     }
 </script>
 <!-- DataTales Example -->
 <div class="table-responsive">
-<form id="frmFormulario_v" name="frmFormulario_v" action="app/views/default/modules/modulos/vacaciones/m.vacaciones.procesa.php" enctype="multipart/form-data" method="post" target="_self" class="form-horizontal">
-    <table class="table table-bordered" id="dataTable_v" width="100%" cellspacing="0">
-        <thead>
-            <tr>
-                <th>Fecha Ingreso</th>
-                <th>Empleado</th>
-                <th>Años</th>
-                <th>Dias</th>
-                <th>Fecha de pago prima</th>
-                <th>Pago de primas</th>
-            </tr>
-        </thead>
+    <form id="frmFormulario_v" name="frmFormulario_v" action="app/views/default/modules/modulos/vacaciones/m.vacaciones.procesa.php" enctype="multipart/form-data" method="post" target="_self" class="form-horizontal">
+        <table class="table table-bordered" id="dataTable_v" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Fecha Ingreso</th>
+                    <th>Empleado</th>
+                    <th>Años</th>
+                    <th>Dias</th>
+                    <th>Fecha de pago prima</th>
+                    <th>Pago de primas</th>
+                    <th>Acciones </th>
+                </tr>
+            </thead>
             <tbody>
-            <td colspan="6" style="text-align: center;color: white;background-color: #e70808;">PRIMAS VACACIONALES CON PAGO GENERADO</td></tr>
+                <td colspan="7" style="text-align: center;color: white;background-color: #e70808;">PRIMAS VACACIONALES CON PAGO GENERADO</td>
+                </tr>
                 <?php
                 $contador = 1;
                 if (count($lstvacacionesR) > 0) {
                     foreach ($lstvacacionesR as $idx => $campo) {
-
+                        $name = $campo->nombres . " " . $campo->ape_paterno . " " . $campo->ape_materno;
                 ?>
-                        <tr>
-                            <td style="text-align: center;"> <?php
-                                                                print $campo->fecha_ingreso; 
-                                                                print "<input type='hidden' id='id_vac-{$contador}' name='id_vac-$contador' value='{$campo->id_vac}'>";
-                                                                print "<input type='hidden' id='id_vacaciones-{$contador}' name='id_vacaciones-$contador' value='{$campo->id}'>";
-                                                                ?>
+                        <tr <?php echo "id='Tr{$contador}'"; ?>>
+                            <td style="text-align: center;"> 
+                            <?php
+                                print $campo->fecha_ingreso;
+                                print "<input type='hidden' id='id_vac-{$contador}' name='id_vac-$contador' value='{$campo->id}'>";
+                                print "<input type='hidden' id='id_vacaciones-{$contador}' name='id_vacaciones-$contador' value='{$campo->id_vac}'>";
+                                ?>
 
                             </td>
-                            <td style="text-align: center;"><?php
-                                                            print "<input type='hidden' id='id_empleado-{$contador}' name='id_empleado-$contador' value='{$campo->id_empleado}'>";
-                                                            print $campo->nombres . " " . $campo->ape_paterno . " " . $campo->ape_materno ?></td>
-                            <td style="text-align: center;"><?php
-                                                            print "<input type='hidden' id='ano-{$contador}' name='ano-$contador' value='{$campo->ano}'>";
-                                                            print $campo->ano;
-                                                            ?>
+                            <td style="text-align: center;">
+                            <?php
+                                print "<input type='hidden' id='id_empleado-{$contador}' name='id_empleado-$contador' value='{$campo->id_empleado}'>";
+                                print $name ?></td>
+                            <td style="text-align: center;">
+                                <?php
+                                    print "<input type='hidden' id='ano-{$contador}' name='ano-$contador' value='{$campo->ano}'>";
+                                    print $campo->ano;
+                                ?>
                             </td>
                             <td style="text-align: center;"><?php
-                                                            print "<input type='hidden' id='dias{$contador}' name='dias$contador' value='{$campo->dias}'>";
+                                                            print "<input type='hidden' id='dias-{$contador}' name='dias-$contador' value='{$campo->dias}'>";
                                                             print $campo->dias; ?>
                             </td>
                             <td style="text-align: center;"><?php
                                                             $campo->fecha_pago;
                                                             $nuevafecha = strtotime('+7 day', strtotime($campo->fecha_pago));
                                                             $nuevafecha = date('Y-m-d', $nuevafecha);
-                                                            print $campo->fecha_pago . 
-                                                            "<input type='checkbox' id='fecha-n{$contador}' name='fecha_pago{$contador}'  onclick='checkIs($contador)' class='obligado' 
-                                                            description='Seleccione una fecha de pago para ".$campo->nombres." ".$campo->ape_paterno . " " . $campo->ape_materno."' value='{$campo->fecha_pago}' > " .
-                                                                $nuevafecha . " <input type='checkbox' id='fecha-v{$contador}' name='fecha_pago{$contador}' onclick='checkIs2($contador)'
-                                                                description='Seleccione una fecha de pago para ".$campo->nombres." ".$campo->ape_paterno . " " . $campo->ape_materno."' value='{$nuevafecha}' >"; ?>
+                                                            print $campo->fecha_pago .
+                                                                "<input type='checkbox' id='fecha-n{$contador}' name='fecha_pago-{$contador}'  onclick='checkIs($contador)' class='obligado' 
+                                                            description='Seleccione una fecha de pago para " . $name . "' value='{$campo->fecha_pago}' > " .
+                                                                $nuevafecha . " <input type='checkbox' id='fecha-v{$contador}' name='fecha_pago-{$contador}' onclick='checkIs2($contador)'
+                                                                description='Seleccione una fecha de pago para " . $name . "' value='{$nuevafecha}' >"; ?>
                             </td>
                             <td style="text-align: center;"><?php
                                                             $pago_prima = ($campo->dias * $campo->salario_diario * 0.25);
-                                                            print "<input type='hidden' id='pago_prima{$contador}' name='pago_prima$contador' value='{$pago_prima}'>";
+                                                            print "<input type='hidden' id='pago_prima-{$contador}' name='pago_prima-{$contador}' value='{$pago_prima}'>";
                                                             print $pago_prima;
                                                             ?>
                             </td>
+                            <td>
+                            </td>
                             <?php
                             $periodo_inicio = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
-                            print "<input type='hidden' id='periodo_inicio{$contador}' name='periodo_inicio{$contador}' value='{$periodo_inicio}' >";
+                            print "<input type='hidden' id='periodo_inicio-{$contador}' name='periodo_inicio-{$contador}' value='{$periodo_inicio}' >";
                             $periodo_fin = (date("Y") + 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . "+ 1 year"));
-                            print "<input type='hidden' id='periodo_fin{$contador}' name='periodo_fin{$contador}' value='{$periodo_fin}'>";
+                            print "<input type='hidden' id='periodo_fin-{$contador}' name='periodo_fin-{$contador}' value='{$periodo_fin}'>";
                             $fecha_final = Carbon::parse($periodo_inicio)->addMonth(6)->format('Y-m-d');
-                            print "<input type='hidden' id='fecha_final{$contador}' name='fecha_final{$contador}' value='{$fecha_final}'>";
+                            print "<input type='hidden' id='fecha_final-{$contador}' name='fecha_final-{$contador}' value='{$fecha_final}'>";
                             ?>
                         </tr>
                 <?php
@@ -130,55 +164,63 @@ $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
                     }
                 }
                 ?>
-                <td colspan="6" style="text-align: center;color: white;background-color: #e70808;">PRIMAS VACACIONALES PARA GENERAR PAGO</td></tr>
-                <?php 
+                <td colspan="7" style="text-align: center;color: white;background-color: #e70808;">PRIMAS VACACIONALES PARA GENERAR PAGO</td>
+                </tr>
+                <?php
                 if (count($lstvacaciones) > 0) {
                     foreach ($lstvacaciones as $idx => $campo) {
-
+                        $name = $campo->nombres . " " . $campo->ape_paterno . " " . $campo->ape_materno;
                 ?>
-                        <tr>
-                            <td style="text-align: center;"> 
-                            <?php
-                                print $campo->fecha_ingreso; 
+                        <tr <?php echo "id='Tr{$contador}'"; ?>>
+                            <td style="text-align: center;">
+                                <?php print $campo->fecha_ingreso;
                                 print "<input type='hidden' id='id_vac-{$contador}' name='id_vac-$contador' value=''>";
                                 print "<input type='hidden' id='id_vacaciones-{$contador}' name='id_vacaciones-$contador' value=''>";
-                            ?>
+                                ?>
                             </td>
-                            <td style="text-align: center;"><?php
-                                                            print "<input type='hidden' id='id_empleado-{$contador}' name='id_empleado-$contador' value='{$campo->id}'>";
-                                                            print $campo->nombres . " " . $campo->ape_paterno . " " . $campo->ape_materno ?></td>
-                            <td style="text-align: center;"><?php
-                                                            print "<input type='hidden' id='ano-{$contador}' name='ano-$contador' value='{$campo->ano}'>";
-                                                            print $campo->ano;
-                                                            ?>
+                            <td style="text-align: center;">
+                                <?php
+                                print "<input type='hidden' id='id_empleado-{$contador}' name='id_empleado-$contador' value='{$campo->id}'>";
+                                print "<label id='nombre{$contador}'>$name</label>"  ?></td>
+                            <td style="text-align: center;">
+                                <?php
+                                print "<input type='hidden' id='ano-{$contador}' name='ano-$contador' value='{$campo->ano}'>";
+                                print $campo->ano;
+                                ?>
                             </td>
-                            <td style="text-align: center;"><?php
-                                                            print "<input type='hidden' id='dias{$contador}' name='dias$contador' value='{$campo->dias}'>";
-                                                            print $campo->dias; ?>
+                            <td style="text-align: center;">
+                                <?php
+                                print "<input type='hidden' id='dias-{$contador}' name='dias-$contador' value='{$campo->dias}'>";
+                                print $campo->dias; ?>
                             </td>
-                            <td style="text-align: center;"><?php
-                                                            $campo->fecha_nomina;
-                                                            $nuevafecha = strtotime('+7 day', strtotime($campo->fecha_nomina));
-                                                            $nuevafecha = date('Y-m-d', $nuevafecha);
-                                                            print $campo->fecha_nomina . 
-                                                            "<input type='checkbox' id='fecha-n{$contador}' name='fecha_pago{$contador}'  onclick='checkIs($contador)' class='obligado' 
-                                                            description='Seleccione una fecha de pago para ".$campo->nombres." ".$campo->ape_paterno . " " . $campo->ape_materno."' value='{$campo->fecha_nomina}' > " .
-                                                                $nuevafecha . " <input type='checkbox' id='fecha-v{$contador}' name='fecha_pago{$contador}' onclick='checkIs2($contador)'
-                                                                description='Seleccione una fecha de pago para ".$campo->nombres." ".$campo->ape_paterno . " " . $campo->ape_materno."' value='{$nuevafecha}' >"; ?>
+                            <td style="text-align: center;">
+                                <?php
+                                $campo->fecha_nomina;
+                                $nuevafecha = strtotime('+7 day', strtotime($campo->fecha_nomina));
+                                $nuevafecha = date('Y-m-d', $nuevafecha);
+                                print $campo->fecha_nomina .
+                                    "<input type='checkbox' id='fecha-n{$contador}' name='fecha_pago-{$contador}'  onclick='checkIs($contador)' class='obligado' 
+                                                            description='Seleccione una fecha de pago para " . $name . "' value='{$campo->fecha_nomina}' > " .
+                                    $nuevafecha . " <input type='checkbox' id='fecha-v{$contador}' name='fecha_pago-{$contador}' onclick='checkIs2($contador)'
+                                                                description='Seleccione una fecha de pago para " . $name . "' value='{$nuevafecha}' >"; ?>
                             </td>
-                            <td style="text-align: center;"><?php
-                                                            $pago_prima = ($campo->dias * $campo->salario_diario * 0.25);
-                                                            print "<input type='hidden' id='pago_prima{$contador}' name='pago_prima$contador' value='{$pago_prima}'>";
-                                                            print $pago_prima;
-                                                            ?>
+                            <td style="text-align: center;">
+                                <?php
+                                $pago_prima = ($campo->dias * $campo->salario_diario * 0.25);
+                                print "<input type='hidden' id='pago_prima-{$contador}' name='pago_prima-$contador' value='{$pago_prima}'>";
+                                print $pago_prima;
+                                ?>
+                            </td>
+                            <td>
+                                <input type="button" id="" class="btn btn-outline-danger" <?php echo "onclick=RemoveTr('Tr{$contador}')"; ?> name="" value="remover">
                             </td>
                             <?php
                             $periodo_inicio = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
-                            print "<input type='hidden' id='periodo_inicio{$contador}' name='periodo_inicio{$contador}' value='{$periodo_inicio}' >";
+                            print "<input type='hidden' id='periodo_inicio-{$contador}' name='periodo_inicio-{$contador}' value='{$periodo_inicio}' >";
                             $periodo_fin = (date("Y") + 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . "+ 1 year"));
-                            print "<input type='hidden' id='periodo_fin{$contador}' name='periodo_fin{$contador}' value='{$periodo_fin}'>";
+                            print "<input type='hidden' id='periodo_fin-{$contador}' name='periodo_fin-{$contador}' value='{$periodo_fin}'>";
                             $fecha_final = Carbon::parse($periodo_inicio)->addMonth(6)->format('Y-m-d');
-                            print "<input type='hidden' id='fecha_final{$contador}' name='fecha_final{$contador}' value='{$fecha_final}'>";
+                            print "<input type='hidden' id='fecha_final-{$contador}' name='fecha_final-{$contador}' value='{$fecha_final}'>";
                             ?>
                         </tr>
                 <?php
@@ -186,9 +228,9 @@ $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
                     }
                 }
                 ?>
-                <input type="hidden" id="contador" name="contador" value="<?=($contador ) ?>" />
+                <input type="" id="contador" name="contador" value="<?= ($contador) ?>" />
                 <input type="hidden" id="accion" name="accion" value="GUARDAR_VACACIONES" />
-        </form>
+    </form>
     </table>
     </tbody>
 </div>

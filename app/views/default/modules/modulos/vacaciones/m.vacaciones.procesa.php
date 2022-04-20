@@ -30,16 +30,17 @@ if ($accion == "GUARDAR") {
 
     for ($i = 1; $i <= $contador; $i++) {
         $oVacaciones->id_vacaciones = addslashes(filter_input(INPUT_POST, "id_vacaciones-".$i));
-        /*$oVacaciones->id_empleado = $campo->id;
-        $oVacaciones->dias =$campo->dias;
-        $oVacaciones->fecha_pago = $campo->fecha_nomina;
-        $oVacaciones->periodo_inicio = (date("Y") - 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
-        $oVacaciones->periodo_fin = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . "+ 1 year"));
-        $oVacaciones->pago_prima = ($campo->dias * $campo->salario_diario * 0.25);
-        $oVacaciones->ano = $campo->anos;
-        $oVacaciones->fecha_final = Carbon::parse($this->periodo_inicio)->addMonth(6)->format('Y-m-d');*/ 
-        $oVacaciones->fecha_pago = addslashes(filter_input(INPUT_POST, "fecha_pago".$i));
+        $oVacaciones->id_vac = addslashes(filter_input(INPUT_POST, "id_vac-".$i));
+        $oVacaciones->id_empleado = addslashes(filter_input(INPUT_POST, "id_empleado-".$i));
         $oVacaciones->ano = addslashes(filter_input(INPUT_POST, "ano-".$i));
+        $oVacaciones->dias = addslashes(filter_input(INPUT_POST, "dias-".$i));
+        $oVacaciones->fecha_pago = addslashes(filter_input(INPUT_POST, "fecha_pago-".$i));
+        $oVacaciones->pago_prima = addslashes(filter_input(INPUT_POST, "pago_prima-".$i));
+        $oVacaciones->periodo_inicio = addslashes(filter_input(INPUT_POST, "periodo_inicio-".$i));
+        $oVacaciones->periodo_fin = addslashes(filter_input(INPUT_POST, "periodo_fin-".$i));
+        
+        $oVacaciones->fecha_final = addslashes(filter_input(INPUT_POST, "fecha_final-".$i));
+        print_r($oVacaciones);
         if ($oVacaciones->VacacionesGeneradas() === true) {
             $result = $i+1;
         }

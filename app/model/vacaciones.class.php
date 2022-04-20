@@ -126,7 +126,6 @@ class vacaciones extends AW
         and b.estatus = 1
         or a.fecha_generada <= '{$this->fecha_genera}'
         AND b.estatus = 1";
-        print_r($sql);
       return $this->Query($sql);
 
     }
@@ -233,7 +232,7 @@ class vacaciones extends AW
                 {$sqlPagar}
                 ,`observaciones` = '{$this->observaciones}'
         WHERE `id` = '{$this->id}';";
-        //print_r($sql);
+
         $bResultado = $this->NonQuery($sql);
 
         if ($bResultado) {
@@ -335,13 +334,14 @@ class vacaciones extends AW
             $sql = "UPDATE `vacaciones_prima`
             SET
             `fecha_pago` = '{$this->fecha_pago}'
-            WHERE `id` = '{$this->id_vacaciones}'";
+            WHERE `id` = '{$this->id_vac}'";
             $bResultado = $this->NonQuery($sql);
+            
             if ($bResultado) {
                 $sql = "UPDATE `vacaciones`
                 SET
                 `fecha_pago` = '{$this->fecha_pago}'
-                WHERE ano = '{$this->ano}'";
+                WHERE id = '{$this->id_vacaciones}'";
                 $bResultado = $this->NonQuery($sql);
             }
             
