@@ -16,7 +16,7 @@ $oVacaciones->fecha_genera = addslashes(filter_input(INPUT_POST, "fecha_genera")
 $lstvacaciones = $oVacaciones->Listado_vacaciones();
 
 $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
-print_r($lstvacacionesR);
+
 ?>
 <script type="text/javascript">
     $(document).ready(function(e) {
@@ -118,7 +118,9 @@ print_r($lstvacacionesR);
                         idV = $(elemnto).find('td').eq(4).find('input[type="checkbox"]').eq(0).attr("id");
                         id1 = idV.split("-")[0];
                         $("#" + idV).attr("onclick", "checkIs("+trNot+")");
-                        $("#" + idV).attr("name", id1 + "-" + trNot);
+                        if ($(elemnto).find('td').eq(4).find('input[type="checkbox"]').eq(0).attr('name')) {
+                            $("#" + idV).attr("name", "fecha_pago-" + trNot);
+                        }
                         $("#" + idV).attr("id", id1 + "-" + trNot);
                     }
 
@@ -126,7 +128,9 @@ print_r($lstvacacionesR);
                         idV = $(elemnto).find('td').eq(4).find('input[type="checkbox"]').eq(1).attr("id");
                         id1 = idV.split("-")[0];
                         $("#" + idV).attr("onclick", "checkIs2("+trNot+")");
-                        $("#" + idV).attr("name", id1 + "-" + trNot);
+                        if ($(elemnto).find('td').eq(4).find('input[type="checkbox"]').eq(1).attr('name')) {
+                            $("#" + idV).attr("name", "fecha_pago-" + trNot);
+                        }
                         $("#" + idV).attr("id", id1 + "-" + trNot);
                     }
 
@@ -205,7 +209,7 @@ print_r($lstvacacionesR);
             </thead>
             <tbody>
                 <td colspan="7" style="text-align: center;color: white;background-color: #e70808;">PRIMAS VACACIONALES CON PAGO GENERADO</td>
-                </tr>
+                </tr>       
                 <?php
                 $contador = 1;
                 if (count($lstvacacionesR) > 0 ) {
@@ -270,11 +274,23 @@ print_r($lstvacacionesR);
                 <td colspan="7" style="text-align: center;color: white;background-color: #e70808;">PRIMAS VACACIONALES PARA GENERAR PAGO</td>
                 </tr>
                 <?php
-                if (count($lstvacacionesR) > 0) {
-                    foreach ($lstvacacionesR as $i => $c) {
                         if (count($lstvacaciones) > 0) {
                             foreach ($lstvacaciones as $idx => $campo) {
-                                if ($c->id_empleado != $campo->id ){
+                                $oVacaciones_prima = new vacaciones();
+                                $oVacaciones_prima->id_empleado = $campo->id;
+                                $oVacaciones_prima->ano = $campo->ano;
+                                $periodo_inicio = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
+                                $oVacaciones_prima->periodo_inicio = $periodo_inicio;
+                                $var = $oVacaciones_prima->VerificarPrima();
+                                $id_empleado = "";
+                                if (!empty($var[0]->id_empleado)){
+                                    $id_empleado = $var[0]->id_empleado;
+                                } 
+
+                                if ($id_empleado == $campo->id && $var[0]->ano == $campo->ano && $var[0]->periodo_inicio == $periodo_inicio ) {
+
+                                } else {
+                                
                                 $name = $campo->nombres . " " . $campo->ape_paterno . " " . $campo->ape_materno;
                 ?>
                                 <tr <?php echo "id='Tr-{$contador}'"; ?> class="remove">
@@ -315,8 +331,6 @@ print_r($lstvacacionesR);
                                         $pago_prima = ($campo->dias * $campo->salario_diario * 0.25);
                                         print "<input type='hidden' id='pago_prima-{$contador}' name='pago_prima-$contador' value='{$pago_prima}'>";
                                         print $pago_prima;
-
-                                        $periodo_inicio = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
                                         print "<input type='hidden' id='periodo_inicio-{$contador}' name='periodo_inicio-{$contador}' value='{$periodo_inicio}' >";
                                         $periodo_fin = (date("Y") + 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . "+ 1 year"));
                                         print "<input type='hidden' id='periodo_fin-{$contador}' name='periodo_fin-{$contador}' value='{$periodo_fin}'>";
@@ -333,8 +347,6 @@ print_r($lstvacacionesR);
                                 }
                             }
                         }
-                    }
-                }
                 ?>
                 <input type="hidden" id="contador" name="contador" value="<?= ($contador) ?>" />
                 <input type="hidden" id="accion" name="accion" value="GUARDAR_VACACIONES" />

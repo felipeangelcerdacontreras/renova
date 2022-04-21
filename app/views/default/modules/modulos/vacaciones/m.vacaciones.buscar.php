@@ -22,8 +22,14 @@ $oVacaciones->ValidaNivelUsuario("vacaciones");
         $("#btnGuardar2").button().click(function(e) { 
             var frmTru = false;
             var contador = 0;
+            var response = 0;
+            var jsonDatos = {
+                "fecha_genera": $("#fecha_genera").val(),
+                "accion": "VERIFICAR_NOMINA"
+            };
 
             $("#frmFormulario_v").find('input').each(function() {
+
                 var elemento = this;
                 if ($(elemento).hasClass("obligado")) {
                     if ($(elemento).prop('checked')) {
@@ -37,7 +43,20 @@ $oVacaciones->ValidaNivelUsuario("vacaciones");
                 }
             });
             if (frmTru == true && contador == ($("#contador").val() - 1) ) {
-                $("#frmFormulario_v").submit();
+                $.ajax({
+                    data: jsonDatos,
+                    type: "POST",
+                    url: "app/views/default/modules/modulos/vacaciones/m.vacaciones.procesa.php",
+                    beforeSend: function() {
+                    },
+                    success: function(datos) {
+                        console.log(datos);
+                        response = datos;
+                        if (datos == 2){
+                            $("#frmFormulario_v").submit();
+                        }
+                    }
+                });
             }
         });
         $("#btnGuardar").button().click(function(e) {

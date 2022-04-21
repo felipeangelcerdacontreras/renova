@@ -95,5 +95,13 @@ if ($accion == "GUARDAR") {
     } else {
         echo 2;
     }
+} else if ($accion == "VERIFICAR_NOMINA") {
+    $oVacaciones = new vacaciones(true, $_POST);
+    
+    if ($oVacaciones->VerificarNomina() === true) {
+        echo 1; 
+    } else {
+        echo 2;
+    }
 }
 ?>

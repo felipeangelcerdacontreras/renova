@@ -107,14 +107,11 @@ class vacaciones extends AW
         FROM
             empleados AS a 
             left join anos_servicio as b on  anos = TIMESTAMPDIFF(YEAR,fecha_ingreso,'{$this->fecha_genera}')
-            left join vacaciones_prima as c on c.id_empleado = a.id
         WHERE
             DATE_FORMAT(fecha_ingreso,'%m-%d') between DATE_FORMAT('2022-01-01','%m-%d') 
             and DATE_FORMAT('{$this->fecha_genera}','%m-%d')
             and TIMESTAMPDIFF(YEAR, fecha_ingreso, '{$this->fecha_genera}') > 0
-            and a.estatus = 1
-            and c.id_empleado is null";
-            print $sql;
+            and a.estatus = 1";
       return $this->Query($sql);
 
     }
@@ -131,6 +128,25 @@ class vacaciones extends AW
         AND a.estatus = 0";
       return $this->Query($sql);
 
+    }
+
+    public function VerificarPrima()
+    {
+        $sql = "select * from vacaciones_prima 
+        where  id_empleado = '{$this->id_empleado}' 
+        and ano = '{$this->ano}' 
+        and periodo_inicio = '{$this->periodo_inicio}' order by id desc limit 1";
+        $res = parent::Query($sql);
+
+        if (!empty($res) && !($res === NULL)) {
+            foreach ($res[0] as $idx => $valor) {
+                $this->{$idx} = $valor;
+            }
+        } else {
+            $res = NULL;
+        }
+
+        return $res;
     }
 
     public function ObtenerAños($fecha_ingreso)
@@ -408,6 +424,15 @@ class vacaciones extends AW
         } else {
             $bResultado = false;
         }
+
+        return $bResultado;
+    }
+    public function VerificarNomina () {
+        $bResultado = false;
+
+        $sqlV = "select * from nominas where 
+        fecha = '{$this->fecha_genera}' and estatus = 0 and fecha_pago is null || estatus = 1";
+        $bResultado = $this->Query($sqlV);
 
         return $bResultado;
     }

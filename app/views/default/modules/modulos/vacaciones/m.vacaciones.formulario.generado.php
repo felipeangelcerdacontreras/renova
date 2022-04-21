@@ -14,8 +14,21 @@ $oVacaciones = new vacaciones(true, $_POST);
 <script type="text/javascript">
 $(document).ready(function(e) {
     $("#btnGenerar").click(Listado2);
-});
+    $( "#fecha_genera" ).datepicker({
+        beforeShowDay: DisableMonday
+    });
 
+});
+function DisableMonday(date) {
+   console.log(date);
+   var day = date.getDay();
+   if (day == 4) {
+    return [true] ;
+   } 
+   else {
+    return [false] ;   
+   }
+}
 
 </script>
 <!-- DataTales Example -->
@@ -28,7 +41,7 @@ $(document).ready(function(e) {
                         <div class="form-group">
                             <strong class="">Fecha de nomina:</strong>
                             <input type="date" aria-describedby="" id="fecha_genera"
-                                value="<?php echo date('Y-m-d'); ?>" required name="fecha_genera"
+                                value="<?php echo date('Y-m-d'); ?>" min="<?php echo date('Y-m-d'); ?>" required name="fecha_genera"
                                 class="form-control" />
                         </div>
                     </div>
