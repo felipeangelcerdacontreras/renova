@@ -107,11 +107,14 @@ class vacaciones extends AW
         FROM
             empleados AS a 
             left join anos_servicio as b on  anos = TIMESTAMPDIFF(YEAR,fecha_ingreso,'{$this->fecha_genera}')
+            left join vacaciones_prima as c on c.id_empleado = a.id
         WHERE
             DATE_FORMAT(fecha_ingreso,'%m-%d') between DATE_FORMAT('2022-01-01','%m-%d') 
             and DATE_FORMAT('{$this->fecha_genera}','%m-%d')
             and TIMESTAMPDIFF(YEAR, fecha_ingreso, '{$this->fecha_genera}') > 0
-            and a.estatus = 1";
+            and a.estatus = 1
+            and c.id_empleado is null";
+            print $sql;
       return $this->Query($sql);
 
     }
@@ -122,10 +125,10 @@ class vacaciones extends AW
         left join empleados as b on b.id = a.id_empleado
         left join vacaciones as c on a.id_vacaciones = c.id
         where a.ano = TIMESTAMPDIFF(YEAR, fecha_ingreso, '{$this->fecha_genera}')
-        and a.estatus = 1
+        and a.estatus = 0
         and b.estatus = 1
         or a.fecha_generada <= '{$this->fecha_genera}'
-        AND b.estatus = 1";
+        AND a.estatus = 0";
       return $this->Query($sql);
 
     }
@@ -329,58 +332,65 @@ class vacaciones extends AW
     public function VacacionesGeneradas()
     {   
         $bResultado = false;
+        $accion = "";
+         
+        $nomina = "SELECT * FROM nominas where fecha = '{$this->fecha_pago}' and estatus = 0 and fecha_pago is null";
+        $res = $this->Query($nomina);
 
-        if (!empty($this->id_vacaciones)) {
-            $sql = "UPDATE `vacaciones_prima`
-            SET
-            `fecha_pago` = '{$this->fecha_pago}'
-            WHERE `id` = '{$this->id_vac}'";
-            $bResultado = $this->NonQuery($sql);
-            
-            if ($bResultado) {
-                $sql = "UPDATE `vacaciones`
+        if (count($res) > 0) {
+            if (!empty($this->id_vacaciones)) {
+                $sql = "UPDATE `vacaciones_prima`
                 SET
                 `fecha_pago` = '{$this->fecha_pago}'
-                WHERE id = '{$this->id_vacaciones}'";
+                WHERE `id` = '{$this->id_vac}'";
                 $bResultado = $this->NonQuery($sql);
-            }
-            
-        }  else {
-            $sqlV = "select id from vacaciones where 
-            id_empleado = '{$this->id_empleado}' and periodo_inicio = '{$this->periodo_inicio}'
-            and ano = '{$this->ano}'";
-
-            $res = $this->Query($sqlV);
-            if (count($res) <= 0  ) {
-                    if ($this->id_empleado != "") {
-                    $sql = "INSERT INTO `vacaciones`
-                    (`id_empleado`,`dias_correspondientes`,`dias_restantes`,`periodo_inicio`,
-                    `periodo_fin`,`pago_prima`,`dias_pagados`,`fecha_pago`,`fecha`,`fecha_final`,`ano`)
-                    VALUES
-                    ('{$this->id_empleado}','{$this->dias}','{$this->dias}',
-                    '{$this->periodo_inicio}','{$this->periodo_fin}','{$this->pago_prima}',
-                    '{$this->dias}','{$this->fecha_pago}',now(),'{$this->fecha_final}','{$this->ano}')";
+                
+                if ($bResultado) {
+                    $sql = "UPDATE `vacaciones`
+                    SET
+                    `fecha_pago` = '{$this->fecha_pago}'
+                    WHERE id = '{$this->id_vacaciones}'";
                     $bResultado = $this->NonQuery($sql);
-                    if($bResultado){
-                        $sql1 = "select id from vacaciones order by id desc limit 1";
-                        $res = $this->Query($sql1);
-
-                        $this->id = $res[0]->id;
-
-                            $sql = 
-                            "INSERT INTO `vacaciones_prima`
-                            (`id_empleado`, `id_vacaciones`, `fecha_pago`,`periodo_inicio`,`periodo_fin`, `estatus`, `ano`, `fecha_generada`)
-                            VALUES
-                            ('{$this->id_empleado}', '{$this->id}', '{$this->fecha_pago}', '{$this->periodo_inicio}',
-                            '{$this->periodo_fin}','0', '{$this->ano}', '{$this->fecha_generada}');";
-                            $bResultado = $this->NonQuery($sql);
-                    }
                 }
-            } else {
-                $bResultado = false;
+                
+            }  else {
+                $sqlV = "select id from vacaciones where 
+                id_empleado = '{$this->id_empleado}' and periodo_inicio = '{$this->periodo_inicio}'
+                and ano = '{$this->ano}'";
+    
+                $res = $this->Query($sqlV);
+                if (count($res) <= 0  ) {
+                        if ($this->id_empleado != "") {
+                        $sql = "INSERT INTO `vacaciones`
+                        (`id_empleado`,`dias_correspondientes`,`dias_restantes`,`periodo_inicio`,
+                        `periodo_fin`,`pago_prima`,`dias_pagados`,`fecha_pago`,`fecha`,`fecha_final`,`ano`)
+                        VALUES
+                        ('{$this->id_empleado}','{$this->dias}','{$this->dias}',
+                        '{$this->periodo_inicio}','{$this->periodo_fin}','{$this->pago_prima}',
+                        '{$this->dias}','{$this->fecha_pago}',now(),'{$this->fecha_final}','{$this->ano}')";
+                        $bResultado = $this->NonQuery($sql);
+                        if($bResultado){
+                            $sql1 = "select id from vacaciones order by id desc limit 1";
+                            $res = $this->Query($sql1);
+    
+                            $this->id = $res[0]->id;
+    
+                                $sql = 
+                                "INSERT INTO `vacaciones_prima`
+                                (`id_empleado`, `id_vacaciones`, `fecha_pago`,`periodo_inicio`,`periodo_fin`, `estatus`, `ano`, `fecha_generada`)
+                                VALUES
+                                ('{$this->id_empleado}', '{$this->id}', '{$this->fecha_pago}', '{$this->periodo_inicio}',
+                                '{$this->periodo_fin}','0', '{$this->ano}', '{$this->fecha_generada}');";
+                                $bResultado = $this->NonQuery($sql);
+                        }
+                    }
+                } else {
+                    $bResultado = false;
+                }
             }
+        } else {
+            $bResultado = false;
         }
-        
         return $bResultado;
     }
 

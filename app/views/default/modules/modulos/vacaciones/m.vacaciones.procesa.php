@@ -40,7 +40,7 @@ if ($accion == "GUARDAR") {
         $oVacaciones->periodo_fin = addslashes(filter_input(INPUT_POST, "periodo_fin-".$i));
         
         $oVacaciones->fecha_final = addslashes(filter_input(INPUT_POST, "fecha_final-".$i));
-        print_r($oVacaciones);
+
         if ($oVacaciones->VacacionesGeneradas() === true) {
             $result = $i+1;
         }
@@ -48,7 +48,7 @@ if ($accion == "GUARDAR") {
     if ($contador == $result) {
     echo "Sistema@Se ha registrado exitosamente la información. @success";
     } else {
-        echo "Sistema@Este usuario ya tiene vacaciones@warning";
+        echo "Sistema@Este usuario ya tiene vacaciones y/o la nomina de la fecha actual ya a sido cerrada@warning";
     }
 } else if ($accion == "Empleado") {
     $oEmpleados = new empleados();
