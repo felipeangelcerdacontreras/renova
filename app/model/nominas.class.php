@@ -176,6 +176,20 @@ class nominas extends AW
                 $retenciones = $total_r;
                 $percepciones = $total_p;
 
+                $sqlVacaciones = "select * from vacaciones_prima where id_empleado='{$id_empleado}' and estatus = '0' and fecha_pago between date_add('{$fecha}', INTERVAL -7 DAY) and '{$fecha}'";
+                $resVacaciones = $this->Query($sqlVacaciones);
+
+                if (!empty($resVacaciones) && !($resVacaciones === NULL)) {
+                    foreach ($resVacaciones as $idx => $vacaciones) {
+                        $sqlUpdatevacaciones = "UPDATE `vacaciones_prima`
+                            SET
+                            `estatus` = 1,
+                            `fecha_pagada` = NOW() 
+                            WHERE `id` = '{$vacaciones->id}'";
+                        $this->NonQuery($sqlUpdatevacaciones);
+                    }
+                }
+
                 $sqlOtros = "select * from otros where id_empleado='{$id_empleado}' and estatus = '1' and fecha_pago between date_add('{$fecha}', INTERVAL -7 DAY) and '{$fecha}'";
                 $resOtros = $this->Query($sqlOtros);
 

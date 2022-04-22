@@ -157,7 +157,7 @@ $oDepartamentos->Informacion(); //id_departamento
                 ?>
                 <Label style="font-size:11">Día en que inicia sus vacaciones:&nbsp; del: &nbsp;<u style="font-size:11"> <?= $dfecha ?> </u></Label>
                 <label style="font-size:11"><u> <?= $oVacaciones->MESES[$mfecha] ?> </u>&nbsp; del </label>&nbsp;
-                <u style="font-size:11"> <?= $afecha ?> </u>
+                <u style="font-size:11"> <?= $afecha ?></u>
             </td>
         </tr>
         <tr>
