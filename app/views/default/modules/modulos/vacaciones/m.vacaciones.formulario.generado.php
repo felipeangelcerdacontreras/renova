@@ -14,22 +14,19 @@ $oVacaciones = new vacaciones(true, $_POST);
 <script type="text/javascript">
 $(document).ready(function(e) {
     $("#btnGenerar").click(Listado2);
-    $( "#fecha_genera" ).datepicker({
-        beforeShowDay: DisableMonday
-    });
-
 });
-function DisableMonday(date) {
-   console.log(date);
-   var day = date.getDay();
-   if (day == 4) {
-    return [true] ;
-   } 
-   else {
-    return [false] ;   
-   }
-}
-
+const picker = document.getElementById('fecha_genera');
+picker.addEventListener('input', function(e){
+  var day = new Date(this.value).getUTCDay();
+  if([6,0,1,2,3,5].includes(day)){
+    e.preventDefault();
+    this.value = '';
+    Alert("", 'Solo se puede seleccionar el dia jueves("Cierre de nomina")', "warning", 1200, false);
+    $("#btnGenerar").hide();
+  } else {
+      $("#btnGenerar").show();
+  }
+});
 </script>
 <!-- DataTales Example -->
 <div class="card shadow mb-4">

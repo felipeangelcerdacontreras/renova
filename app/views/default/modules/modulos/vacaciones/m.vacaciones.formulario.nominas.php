@@ -347,6 +347,18 @@ $avacaciones = empty($oVacaciones->perfiles_id) ? array() : explode("@", $oVacac
             Alert("", 'La fecha de pago debe ser mayor a la fecha del cumplimiento del año ', "warning", 1200, false);
         }
     }
+    const picker = document.getElementById('fecha_pago');
+    picker.addEventListener('input', function(e){
+    var day = new Date(this.value).getUTCDay();
+    if([6,0,1,2,3,5].includes(day)){
+        e.preventDefault();
+        this.value = '';
+        Alert("", 'Solo se puede seleccionar el dia jueves("Cierre de nomina")', "warning", 1200, false);
+        $("#btnGuardar").hide();
+    } else {
+        $("#btnGuardar").show();
+    }
+    });
 </script>
 
 <form id="frmFormulario_" name="frmFormulario_" action="app/views/default/modules/modulos/vacaciones/m.vacaciones.procesa.php" enctype="multipart/form-data" method="post" target="_self" class="form-horizontal">

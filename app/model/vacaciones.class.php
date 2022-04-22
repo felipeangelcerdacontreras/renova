@@ -349,11 +349,7 @@ class vacaciones extends AW
     {   
         $bResultado = false;
         $accion = "";
-         
-        $nomina = "SELECT * FROM nominas where fecha = '{$this->fecha_pago}' and estatus = 0 and fecha_pago is null";
-        $res = $this->Query($nomina);
 
-        if (count($res) > 0) {
             if (!empty($this->id_vacaciones)) {
                 $sql = "UPDATE `vacaciones_prima`
                 SET
@@ -396,7 +392,7 @@ class vacaciones extends AW
                                 (`id_empleado`, `id_vacaciones`, `fecha_pago`,`periodo_inicio`,`periodo_fin`, `estatus`, `ano`, `fecha_generada`)
                                 VALUES
                                 ('{$this->id_empleado}', '{$this->id}', '{$this->fecha_pago}', '{$this->periodo_inicio}',
-                                '{$this->periodo_fin}','0', '{$this->ano}', '{$this->fecha_generada}');";
+                                '{$this->periodo_fin}','0', '{$this->ano}', 'NOW()');";
                                 $bResultado = $this->NonQuery($sql);
                         }
                     }
@@ -404,9 +400,6 @@ class vacaciones extends AW
                     $bResultado = false;
                 }
             }
-        } else {
-            $bResultado = false;
-        }
         return $bResultado;
     }
 
@@ -428,13 +421,12 @@ class vacaciones extends AW
         return $bResultado;
     }
     public function VerificarNomina () {
-        $bResultado = false;
-
-        $sqlV = "select * from nominas where 
-        fecha = '{$this->fecha_genera}' and estatus = 0 and fecha_pago is null || estatus = 1";
-        $bResultado = $this->Query($sqlV);
-
-        return $bResultado;
+        $sql = "select count(id) as id from nominas where 
+            fecha = '{$this->fecha_genera}' and estatus = 0 and fecha_pago is null 
+        union all 
+            select count(id) as id from nominas where 
+            fecha = '{$this->fecha_genera}' and estatus = 1 and fecha_pago is not null";
+        return $this->Query($sql);
     }
 
     public function Guardar()

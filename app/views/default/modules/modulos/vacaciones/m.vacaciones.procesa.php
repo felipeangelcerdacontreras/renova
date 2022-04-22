@@ -97,11 +97,8 @@ if ($accion == "GUARDAR") {
     }
 } else if ($accion == "VERIFICAR_NOMINA") {
     $oVacaciones = new vacaciones(true, $_POST);
-    
-    if ($oVacaciones->VerificarNomina() === true) {
-        echo 1; 
-    } else {
-        echo 2;
-    }
+    $resultado = $oVacaciones->VerificarNomina();
+    echo $resultado[0]->id."@";
+    echo $resultado[1]->id;
 }
 ?>

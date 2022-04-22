@@ -50,10 +50,16 @@ $oVacaciones->ValidaNivelUsuario("vacaciones");
                     beforeSend: function() {
                     },
                     success: function(datos) {
-                        console.log(datos);
-                        response = datos;
-                        if (datos == 2){
+                        var nom1 = datos.split("@")[0];
+                        var nom2 = datos.split("@")[1];
+                        if (nom1 == 0 && nom2 == 0){
                             $("#frmFormulario_v").submit();
+                        } else if (nom1 == 1 && nom2 == 0){
+                            $("#frmFormulario_v").submit();
+                        } else {
+                            Alert("La nomina de la fecha: "+$("#fecha_genera").val()+" actual esta cerrada", 
+                            "Seleccione la sigueinte fecha de nomina para poder generar las vacaciones",
+                             "warning", 1500, false); 
                         }
                     }
                 });
@@ -85,7 +91,30 @@ $oVacaciones->ValidaNivelUsuario("vacaciones");
                 }
             });
             if (frmTrue == true ) {
-                $("#frmFormulario_").submit();
+                var jsonDatos = {
+                    "fecha_genera": $("#fecha_pago").val(),
+                    "accion": "VERIFICAR_NOMINA"
+                };
+                $.ajax({
+                    data: jsonDatos,
+                    type: "POST",
+                    url: "app/views/default/modules/modulos/vacaciones/m.vacaciones.procesa.php",
+                    beforeSend: function() {
+                    },
+                    success: function(datos) {
+                        var nom1 = datos.split("@")[0];
+                        var nom2 = datos.split("@")[1];
+                        if (nom1 == 0 && nom2 == 0){
+                            $("#frmFormulario_v").submit();
+                        } else if (nom1 == 1 && nom2 == 0){
+                            $("#frmFormulario_v").submit();
+                        } else {
+                            Alert("La nomina de la fecha: "+$("#fecha_genera").val()+" actual esta cerrada", 
+                            "Seleccione la sigueinte fecha de nomina para poder generar las vacaciones",
+                             "warning", 1500, false); 
+                        }
+                    }
+                });
             }
         });
 
