@@ -99,5 +99,8 @@ class mvc_controller_default extends mvc_controller {
     public function festivos () {
         include_once("app/views/default/modules/catalogos/festivos/m.festivos.buscar.php");
     }
+    public function nominas_fiscal () {
+        include_once("app/views/default/modules/modulos/nominas_fiscal/m.nominas.buscar.php");
+    }
 }
 ?>

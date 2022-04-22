@@ -80,6 +80,8 @@ if ($action === "login") {
         $mvc_default->ubicacion_checador();
     }else if ($action === "festivos") {
         $mvc_default->festivos();
+    }else if ($action === "nominas_fiscal") {
+        $mvc_default->nominas_fiscal();
     }else if ($action === "cerrar_sesion") {
         $mvc->CerrarSesion();
     }else if ($action === "acceso_denegado") {

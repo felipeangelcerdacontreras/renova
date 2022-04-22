@@ -319,7 +319,7 @@ class vacaciones extends AW
             (`id_empleado`, `id_vacaciones`, `fecha_pago`,`periodo_inicio`,`periodo_fin`, `estatus`, `ano`, `fecha_generada`)
             VALUES
             ('{$this->id_empleado}', '{$this->id}', '{$this->fecha_pago}', '{$this->periodo_inicio}',
-            '{$this->periodo_fin}','0', '{$this->ano}', '{$this->fecha_generada}');";
+            '{$this->periodo_fin}','0', '{$this->ano}', now());";
             $bResultado = $this->NonQuery($sql);
         }
         if ($bResultado) {

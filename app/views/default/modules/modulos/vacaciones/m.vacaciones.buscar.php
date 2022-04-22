@@ -105,9 +105,9 @@ $oVacaciones->ValidaNivelUsuario("vacaciones");
                         var nom1 = datos.split("@")[0];
                         var nom2 = datos.split("@")[1];
                         if (nom1 == 0 && nom2 == 0){
-                            $("#frmFormulario_v").submit();
+                            $("#frmFormulario_").submit();
                         } else if (nom1 == 1 && nom2 == 0){
-                            $("#frmFormulario_v").submit();
+                            $("#frmFormulario_").submit();
                         } else {
                             Alert("La nomina de la fecha: "+$("#fecha_genera").val()+" actual esta cerrada", 
                             "Seleccione la sigueinte fecha de nomina para poder generar las vacaciones",

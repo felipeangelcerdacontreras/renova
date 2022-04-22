@@ -111,6 +111,7 @@ $aPermisos = empty($oUsuarios->perfiles_id) ? array() : explode("@", $oUsuarios-
                     <input type="checkbox" name="perfiles_id[]" value="empleados" <?php if ($oUsuarios->ExistePermiso("empleados", $aPermisos) === true) echo "checked" ?>><strong> Empleados</strong><br />
                     <input type="checkbox" name="perfiles_id[]" value="horas" <?php if ($oUsuarios->ExistePermiso("horas", $aPermisos) === true) echo "checked" ?>><strong> Horas extras</strong><br />
                     <input type="checkbox" name="perfiles_id[]" value="horarios" <?php if ($oUsuarios->ExistePermiso("horarios", $aPermisos) === true) echo "checked" ?>><strong> Horarios</strong><br />
+                    <input type="checkbox" name="perfiles_id[]" value="nominas_fiscal" <?php if ($oUsuarios->ExistePermiso("nominas_fiscal", $aPermisos) === true) echo "checked" ?>><strong> Nominas Fiscal</strong><br />
                     <input type="checkbox" name="perfiles_id[]" value="nominas" <?php if ($oUsuarios->ExistePermiso("nominas", $aPermisos) === true) echo "checked" ?>><strong> Nominas</strong><br />
                     <input type="checkbox" name="perfiles_id[]" value="asistencia" <?php if ($oUsuarios->ExistePermiso("asistencia", $aPermisos) === true) echo "checked" ?>><strong> Asistencia</strong><br />
                     <input type="checkbox" name="perfiles_id[]" value="permisos" <?php if ($oUsuarios->ExistePermiso("permisos", $aPermisos) === true) echo "checked" ?>><strong> Permisos</strong><br />
