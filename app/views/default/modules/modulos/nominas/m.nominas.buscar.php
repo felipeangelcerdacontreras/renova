@@ -9,7 +9,12 @@ require_once($_SITE_PATH . "app/model/nominas.class.php");
 $oNominas = new nominas();
 $sesion = $_SESSION[$oNominas->NombreSesion];
 $oNominas->ValidaNivelUsuario("nominas");
-
+$num = 6;
+$fecha = '2022-04-22';
+$inicio_vacaci = '2022-04-22';
+$fin_vacaci = '2022-04-27';
+$vaca = $oNominas->DiasIncapacidad($num, $fecha, $inicio_vacaci, $fin_vacaci);
+print_r($vaca);
 $fecha_actual = date("d-m-Y");
 ?>
 <?php require_once('app/views/default/script_h.html'); ?>

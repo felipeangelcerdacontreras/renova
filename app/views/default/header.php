@@ -27,6 +27,27 @@ $count = $count + count($lstNominasF);
 
     });
 
+    function SolictudF(id) {
+        $.ajax({
+            data: "id=" + id,
+            type: "POST",
+            url: "app/views/default/notificaciones.formulario.php",
+            beforeSend: function() {
+                $("#oNominas").html(
+                    '<div class="container"><center><img src="app/views/default/img/loading.gif" border="0"/><br />Cargando formulario, espere un momento por favor...</center></div>'
+                );
+            },
+            success: function(datos) {
+                console.log(datos);
+                $("#modal-body-nomina").html(datos);
+            }
+        });
+        $("#btnGuardar").show();
+        $("#nominasModal").modal({
+            backdrop: "true"
+        });
+    }
+
     function Solictud(id) {
         $.ajax({
             data: "id=" + id,
@@ -49,6 +70,32 @@ $count = $count + count($lstNominasF);
     }
 
     function AprovarDenegar(id, estatus) {
+        $.ajax({
+            data: "accion=AprovarDenegar&id=" + id + "&estatus=" + estatus,
+            type: "POST",
+            url: "app/views/default/modules/modulos/nominas/m.nominas.procesa.php",
+            beforeSend: function() {},
+            success: function(data) {
+                console.log(data);
+                var str = data;
+                var datos0 = str.split("@")[0];
+                var datos1 = str.split("@")[1];
+                var datos2 = str.split("@")[2];
+                if ((datos3 = str.split("@")[3]) === undefined) {
+                    datos3 = "";
+                } else {
+                    datos3 = str.split("@")[3];
+                }
+                Alert(datos0, datos1 + "" + datos3, datos2, 900, false);
+                $("#nominasModal").modal("hide");
+                setTimeout(function() {
+                    window.location.reload(1);
+                }, 1000);
+            }
+        });
+    }
+
+    function AprovarDenegarF(id, estatus) {
         $.ajax({
             data: "accion=AprovarDenegar&id=" + id + "&estatus=" + estatus,
             type: "POST",
@@ -217,6 +264,24 @@ $count = $count + count($lstNominasF);
                 <h5 class="modal-title" id="exampleModalLabel">Aprobar solicitud</h5>
             </div>
             <div class="modal-body" id="modal-body-nomina">
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Logout Modal-->
+<div class="modal fade bd-example-modal-lg" id="nominasModalF" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Aprobar solicitud</h5>
+            </div>
+            <div class="modal-body" id="modal-body-nominaF">
 
             </div>
             <div class="modal-footer">

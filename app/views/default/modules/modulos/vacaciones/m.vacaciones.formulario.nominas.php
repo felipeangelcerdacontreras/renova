@@ -342,9 +342,10 @@ $avacaciones = empty($oVacaciones->perfiles_id) ? array() : explode("@", $oVacac
         var timeEnd = new Date(document.getElementById("fecha_pago").value);
         var actualDate = new Date();
         if (timeEnd > timeStart) {
-           
+            $("#btnGuardar").show();
         } else if (timeEnd != null && timeEnd < timeStart) {
             Alert("", 'La fecha de pago debe ser mayor a la fecha del cumplimiento del año ', "warning", 1200, false);
+            $("#btnGuardar").hide();
         }
     }
     const picker = document.getElementById('fecha_pago');

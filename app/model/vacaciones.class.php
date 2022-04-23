@@ -361,7 +361,8 @@ class vacaciones extends AW
                     $sql = "UPDATE `vacaciones`
                     SET
                     `fecha_pago` = '{$this->fecha_pago}'
-                    WHERE id = '{$this->id_vacaciones}'";
+                    WHERE id_empleado = '{$this->id_empleado}' 
+                    and periodo_inicio = '{$this->periodo_inicio}' ano = '{$this->ano}'  ";
                     $bResultado = $this->NonQuery($sql);
                 }
                 

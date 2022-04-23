@@ -1035,6 +1035,9 @@ class nominas extends AW
                     if ($campo->daysIncapa != "" && $campo->inicio_incapacida != "" && $campo->fin_incapacida != "" && $campo->NominaAdministrativa == '0') {
                         $dias_incapacidades = $this->DiasIncapacidad($campo->daysIncapa, $campo->fecha, $campo->inicio_incapacida, $campo->fin_incapacida);
                         if (!empty($campo->monto_dia) && $campo->monto_dia != "0.00") {
+                            if ($dias_incapacidades > 1) {
+                                $dias_incapacidades = $dias_incapacidades - 1;
+                            }
                             $total_incapacidades = ($dias_incapacidades * $campo->monto_dia);
                         }
                         $totalEsperado = $totalEsperado + $total_incapacidades;
