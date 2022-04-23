@@ -246,8 +246,7 @@ class vacaciones extends AW
                 `dias_disfrutar` = '{$this->dias_disfrutar}',
                 `dias_restantes` = '{$this->dias_restantes}',
                 `inicio_vacaci` = '{$this->inicio_vacaci}',
-                `fin_vacaci` = '{$this->fin_vacaci}',
-                `reingreso` = '{$this->reingreso}'
+                `fin_vacaci` = '{$this->fin_vacaci}'
                 {$sqlPagar}
                 ,`observaciones` = '{$this->observaciones}'
         WHERE `id` = '{$this->id}';";

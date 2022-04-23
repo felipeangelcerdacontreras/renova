@@ -1049,7 +1049,7 @@ class nominas extends AW
                         $s_productividad = $s_productividad * 0;
                         $s_doce = $s_doce * 0;
                         $complemento = $complemento * 0;
-                        $total = $dias_incapacidades * $campo->monto_dia;
+                        $totalEsperado = $dias_incapacidades * $campo->monto_dia; 
                     } else  {
                         $total = $totalEsperado;
                     }
