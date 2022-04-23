@@ -6,7 +6,7 @@
 session_start();
 
 $_SITE_PATH = $_SERVER["DOCUMENT_ROOT"] . "/" . explode("/", $_SERVER["PHP_SELF"])[1] . "/";
-require_once($_SITE_PATH . "/app/model/nominas.nominas.fiscal.class.php");
+require_once($_SITE_PATH . "/app/model/nominas.fiscal.class.php");
 require_once($_SITE_PATH . "/app/model/empleados.class.php");
 require_once($_SITE_PATH . "/app/model/ahorros.class.php");
 require_once($_SITE_PATH . "/app/model/prestamos.class.php");
@@ -66,8 +66,7 @@ if ($accion == "GUARDAR") {
     $oEmpleados = new empleados(true, $_POST);
     $oEmpleados->id = addslashes(filter_input(INPUT_POST, "id_empleado"));
     $res = $oEmpleados->Informacion();
-    $arr = array($res[0]->salario_diario,$res[0]->salario_asistencia,$res[0]->salario_puntualidad,
-    $res[0]->salario_productividad,$res[0]->complemento_sueldo,$res[0]->bono_doce);
+    $arr = array($res[0]->salario_diario_fiscal);
     echo json_encode($arr);
 } else if ($accion == "ExisteAhorro") {
     $oAhorros = new ahorros(true, $_POST);

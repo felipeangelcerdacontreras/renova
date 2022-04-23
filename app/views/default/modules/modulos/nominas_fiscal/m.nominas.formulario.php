@@ -57,11 +57,6 @@ $lstnominas = $oNominas->Listado_prenomina();
                     ?>
                             <tr>
                                 <td style="text-align: center;"><?= $campo->nombre ?></td>
-                                <td style="text-align: center;">
-                                    <?= $campo->asistencia ?><br>
-                                        <input class="" type="checkbox" id="asistencia_<?= $campo->id_empleado?>" name="asistencia_<?= $campo->id_empleado?>" value="1"><br>
-                                        <label class="form-check-label" for="A">Agregar Premio</label>
-                                </td>
                                 <td style="text-align: center;"><?= "$" . $campo->diario ?></td>
                                 <td style="text-align: center;"><?= $campo->faltas ?></td>
                                 <td style="text-align: center;">

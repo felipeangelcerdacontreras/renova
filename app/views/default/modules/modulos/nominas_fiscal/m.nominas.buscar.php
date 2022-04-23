@@ -245,6 +245,7 @@ $fecha_actual = date("d-m-Y");
                                 "accion": "Solicitar",
                                 "id_": id,
                                 "id_empleado_": id_empleado,
+                                "laborados_": $("#laborados_" + id_empleado).val()
                             };
 
                             $.ajax({
@@ -310,7 +311,9 @@ $fecha_actual = date("d-m-Y");
             beforeSend: function() {},
             success: function(datos) {
                 ret = JSON.parse(datos);
+                salario_diario = ret[0];
 
+                $("#diario_add").val(salario_diario);
             }
         });
     }

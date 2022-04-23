@@ -6,7 +6,7 @@
 session_start();
 
 $_SITE_PATH = $_SERVER["DOCUMENT_ROOT"] . "/" . explode("/", $_SERVER["PHP_SELF"])[1] . "/";
-require_once($_SITE_PATH . "/app/model/nominas_fiscal.class.php");
+require_once($_SITE_PATH . "/app/model/nominas.fiscal.class.php");
 
 $oNominas = new nominas_fiscal();
 $oNominas->id = addslashes(filter_input(INPUT_POST, "id"));
@@ -30,7 +30,7 @@ $lstnominas = $oNominas->Listado_prenomina();
                 text: 'Exportar a pdf',
                 orientation: 'landscape',
                 exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    columns: [0, 1, 2, 3, 4, 5]
                 }
             }],
             "footerCallback": function(row, data, start, end, display) {

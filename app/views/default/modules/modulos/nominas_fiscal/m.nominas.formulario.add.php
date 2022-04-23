@@ -27,7 +27,7 @@ $lstEmpleados = $oEmpleados->Listado();
                 var datos2 = str.split("@")[2];
                 if ((datos3 = str.split("@")[3]) === undefined) {
                     datos3 = "";
-                    name="ahorro"} else {
+                }else {
                     datos3 = str.split("@")[3];
                 }
                 Alert(datos0, datos1 + "" + datos3, datos2);
@@ -35,10 +35,10 @@ $lstEmpleados = $oEmpleados->Listado();
                 $("#myModal_nominasAdd").modal("hide");
             }
         });
-        $('#id_empleado').select2({
+        /*$('#id_empleado').select2({
             width: '100%',
             dropdownParent: $('#myModal_nominasAdd')
-        });
+        });*/
     });
     $('#id_empleado').change(function() {
         $("#nombre").val($( "#id_empleado option:selected" ).text());
@@ -53,6 +53,7 @@ $lstEmpleados = $oEmpleados->Listado();
         totalPercepciones = ((diario * asistencias));
         //console.log(totalPercepciones);
         $("#total_add").val(totalPercepciones).trigger('change');
+        $("#total_p").val(totalPercepciones).trigger('change');
     });
 
 </script>
@@ -80,7 +81,7 @@ $lstEmpleados = $oEmpleados->Listado();
                 <div class="form-group">
                     <strong class="">Salario diario:</strong>
                     <div class="form-group">
-                        <input type="number" description="" readonly aria-describedby="" step="0.01"  id="diario_add" name="diario" class="form-control" />
+                        <input type="number" description="" readonly aria-describedby="" step="0.01"  id="diario_add" name="diario" class="form-control change" />
                     </div>
                 </div>
             </div>
@@ -90,13 +91,13 @@ $lstEmpleados = $oEmpleados->Listado();
                 <div class="form-group">
                     <strong class="">Dias laborados:</strong>
                     <div class="form-group">
-                        <input type="number" min="1" max="7" description="Ingrese los dias laborados" readonly id="asistencias_add" name="asistencias" class="form-control obligado" />
+                        <input type="number" min="1" max="7" description="Ingrese los dias laborados" id="asistencias_add" name="asistencias" class="form-control obligado change" />
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="row" hidden>
+        <div class="row">
             <div class="col">
                 <div class="form-group">
                     <strong class="">Total Percepciones:</strong>
@@ -107,7 +108,7 @@ $lstEmpleados = $oEmpleados->Listado();
             </div>
         </div>
 
-        <div class="row" hidden>
+        <div class="row" >
             <div class="col">
                 <div class="form-group">
                     <strong class="">Total a pagar:</strong>

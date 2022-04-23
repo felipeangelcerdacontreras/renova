@@ -66,6 +66,23 @@ class nominas_fiscal extends AW
         return $this->Query($sql);
     }
 
+    public function Listado_peticiones()
+    {
+        $sql = "SELECT a.*, concat(b.nombre_usuario) as solicitante FROM nomina_final_edit_fiscal as a
+            left join usuarios as b on a.id_usuario_p = b.id where a.estatus_final_edit = '1'";
+
+        return $this->Query($sql);
+    }
+
+    public function AprovarDenegar()
+    {
+        $sql = "UPDATE `nomina_final_edit_fiscal`
+        SET 
+        `estatus_final_edit` = '{$this->estatus}'
+        WHERE `id` = '{$this->id}'";
+        return $this->NonQuery($sql);
+    }
+
     public function Listado_nomina()
     {
         $tabla = "nomina_final_edit_fiscal";
@@ -130,13 +147,13 @@ class nominas_fiscal extends AW
 
     public function Pagar()
     {
-        $oNominas = new nominas();
+        $oNominas = new nominas_fiscal();
         $oNominas->id = $this->id;
         $lstnominas = $oNominas->Listado_prenomina();
 
         if (count($lstnominas) > 0) {
             foreach ($lstnominas as $idx => $prenomina) {
-                $oNominas_edit = new nominas();
+                $oNominas_edit = new nominas_fiscal();
                 $oNominas_edit->id_nomina = $prenomina->id_nomina;
                 $oNominas_edit->id_empleado = $prenomina->id_empleado;
                 $oNominas_edit->Nomina_edit();
@@ -222,7 +239,7 @@ class nominas_fiscal extends AW
     {
 
         $sql = "update
-                    nominas
+                    nominas_fiscal
                 set
                 nombre = '{$this->nombre}',
                 placa = '{$this->placa}',
@@ -400,7 +417,7 @@ class nominas_fiscal extends AW
             c.fecha_ingreso,
             WEEK(a.fecha) AS semana,
             c.salario_semanal,
-            c.salario_diario,
+            c.salario_diario_fiscal,
             c.salario_asistencia,
             c.salario_puntualidad,
             c.salario_productividad,
@@ -415,7 +432,7 @@ class nominas_fiscal extends AW
             
             
             ((SELECT COUNT(dia) + 1 FROM asistencia WHERE id_empleado = c.id AND estatus_entrada = 1 AND
-            fecha BETWEEN DATE_ADD(a.fecha, INTERVAL - 6 DAY) AND a.fecha) * c.salario_diario) AS esperado,
+            fecha BETWEEN DATE_ADD(a.fecha, INTERVAL - 6 DAY) AND a.fecha) * c.salario_diario_fiscal) AS esperado,
 
             ((SELECT inicio_vacaci
             FROM vacaciones where id_empleado = c.id and
@@ -453,6 +470,8 @@ class nominas_fiscal extends AW
             LEFT JOIN horas_extras AS d ON c.id = d.id_empleado
             LEFT JOIN (SELECT dia, id_empleado, fecha FROM asistencia) e ON c.id = e.id_empleado
             LEFT JOIN (SELECT * FROM puestos) h ON c.id_puesto = h.id
+            LEFT JOIN (SELECT * FROM vacaciones) k ON c.id = k.id_empleado
+            LEFT JOIN (SELECT * FROM departamentos) i ON h.id_departamento = i.id
             WHERE a.id ='{$id}' and c.estatus = '1' group by c.id";
         $resNomina = $this->Query($sqlNomina);
 
@@ -469,7 +488,7 @@ class nominas_fiscal extends AW
             c.fecha_ingreso,
             WEEK(a.fecha) AS semana,
             c.salario_semanal,
-            c.salario_diario,
+            c.salario_diario_fiscal,
             c.salario_asistencia,
             c.salario_puntualidad,
             c.salario_productividad,
@@ -484,7 +503,7 @@ class nominas_fiscal extends AW
 
             
             ((SELECT COUNT(dia) + 1 FROM asistencia WHERE id_empleado = c.id AND estatus_entrada = 1 AND
-            fecha BETWEEN DATE_ADD(a.fecha, INTERVAL - 6 DAY) AND a.fecha) * c.salario_diario) AS esperado,
+            fecha BETWEEN DATE_ADD(a.fecha, INTERVAL - 6 DAY) AND a.fecha) * c.salario_diario_fiscal) AS esperado,
 
             ((SELECT inicio_vacaci
             FROM vacaciones where id_empleado = c.id and
@@ -523,8 +542,10 @@ class nominas_fiscal extends AW
             LEFT JOIN (SELECT dia, id_empleado, fecha FROM asistencia) e ON c.id = e.id_empleado
             LEFT JOIN (SELECT * FROM puestos) h ON c.id_puesto = h.id
             LEFT JOIN (SELECT * FROM vacaciones) k ON c.id = k.id_empleado
+            LEFT JOIN (SELECT * FROM departamentos) i ON h.id_departamento = i.id
             WHERE a.id ='{$this->id}' and c.id = '35' || c.id = '7' || c.id = '26' || c.id = '90' || c.id = '85' 
             and c.estatus = '1' group by c.id";
+            print $sqlAdminist;
         $resAdmin = $this->Query($sqlAdminist);
 
         foreach ($resAdmin as $idx => $campo) {
@@ -567,14 +588,7 @@ class nominas_fiscal extends AW
                 if ($asistencias < 1) {
                     $totalEsperado = $totalEsperado + 0;
                 } else {
-                    $totalEsperado = $totalEsperado + $resEmpleado[0]->salario_diario * $asistencias;
-                }
-
-                if ($resNomina[0]->dias_incapacida != "" && $resNomina[0]->dias_incapacida > 0 && $resNomina[0]->monto_incapacida != "0.00") {
-                    if (!empty($resNomina[0]->monto_incapacida) && $resNomina[0]->monto_incapacida != "0.00") {
-                        $total_incapacidades = ($resNomina[0]->dias_incapacida * $resNomina[0]->monto_incapacida);
-                    }
-                    $totalEsperado = $totalEsperado + $total_incapacidades;
+                    $totalEsperado = $totalEsperado + $resEmpleado[0]->salario_diario_fiscal * $asistencias;
                 }
 
                 $total = $totalEsperado;
@@ -584,8 +598,8 @@ class nominas_fiscal extends AW
                     (`id_nomina`,`id_empleado`,`nombre`,`diario`,`faltas`,
                     `asistencias`,`total`,`total_p`,`fecha`,`id_usuario_p`,`estatus_final_edit`)
                     VALUES
-                    ('{$this->id_}','{$this->id_empleado_}','{$nombre}','{$diario}','{$faltas}','{$asistencias}','{$resNomina[0]->monto_dia}',
-                    '{$resNomina[0]->dias_incapacidades}','{$total}','{$total_p}','{$resNomina[0]->fecha}','{$_SESSION[$this->NombreSesion]->id}','1')";
+                    ('{$this->id_}','{$this->id_empleado_}','{$nombre}','{$diario}','{$faltas}','{$asistencias}',
+                    '{$total}','{$total_p}','{$resNomina[0]->fecha}','{$_SESSION[$this->NombreSesion]->id}','1')";
                 $bResultado = $this->NonQuery($sqlInserNominaEdit);
             }
         }
@@ -624,7 +638,6 @@ class nominas_fiscal extends AW
                     $totalRetenciones = 0;
                     $dias_vacaciones = 0;
                     $dias_incapacidades = 0;
-                    $total_incapacidades = 0;
 
                     if ($campo->daysVaca != "" && $campo->inicio_vacaci != "" && $campo->fin_vacaci != "" && $campo->NominaAdministrativa == '0') {
                         $dias_vacaciones = $this->DiasVacacion($campo->daysVaca, $campo->fecha, $campo->inicio_vacaci, $campo->fin_vacaci);
@@ -667,8 +680,7 @@ class nominas_fiscal extends AW
                     //vareables para insert
                     $nombre = ucwords($campo->ape_paterno . " " . $campo->ape_materno . " " . $campo->nombres);
 
-
-                    $diario = bcdiv($campo->salario_diario, '1', 2);
+                    $diario = bcdiv($campo->salario_diario_fiscal, '1', 2);
 
                     $faltas = (7 - $campo->dias_laborados);
 
@@ -681,21 +693,7 @@ class nominas_fiscal extends AW
                     } else {
                         $totalEsperado = $totalEsperado + $diario * $asistencias;
                     }
-
-
-                    if ($campo->daysIncapa != "" && $campo->inicio_incapacida != "" && $campo->fin_incapacida != "" && $campo->NominaAdministrativa == '0') {
-                        $dias_incapacidades = $this->DiasIncapacidad($campo->daysIncapa, $campo->fecha, $campo->inicio_incapacida, $campo->fin_incapacida);
-                        if (!empty($campo->monto_dia) && $campo->monto_dia != "0.00") {
-                            $total_incapacidades = ($dias_incapacidades * $campo->monto_dia);
-                        }
-                        $totalEsperado = $totalEsperado + $total_incapacidades;
-                    }
-                    
-                    if ($total_incapacidades > 0 && $asistencias <= 1) {
-                        $total = $dias_incapacidades * $campo->monto_dia;
-                    } else  {
-                        $total = $totalEsperado;
-                    }
+                    $total = $totalEsperado;
 
                     $total_p = bcdiv($totalEsperado, '1', 2);
 
@@ -703,7 +701,7 @@ class nominas_fiscal extends AW
 
                         $select = "SELECT * FROM nomina_final_fiscal where id_nomina = '{$this->id}' and id_empleado = '{$campo->id_empleado}'";
                         $resSelect = $this->Query($select);
-                        if ($total_incapacidades > 0 || $asistencias > 1) {
+                        if ($asistencias > 1) {
                             if (count($resSelect) > 0) {
                                 $sql = "UPDATE `nomina_final_fiscal`
                                 SET
@@ -720,11 +718,9 @@ class nominas_fiscal extends AW
                             } else {
                                 try {
                                     $sqlInserNomina = "INSERT INTO `nomina_final_fiscal`
-                                    (`id_nomina`,`id_empleado`,`nombre`,`diario`,`faltas`,
-                                    `asistencias`,`total``infonavit`,
-                                    `otros`,`total_r`,`total_p`,`fecha`)
+                                    (`id_nomina`,`id_empleado`,`nombre`,`diario`,`faltas`,`asistencias`,`total`,`total_p`,`fecha`)
                                     VALUES
-                                    ('{$this->id}','{$campo->id_empleado}','{$nombre}','{$diario}','{$faltas}','{$asistencias}','{$campo->monto_dia}','{$dias_incapacidades}','{$total}','{$total_p}','{$campo->fecha}')";
+                                    ('{$this->id}','{$campo->id_empleado}','{$nombre}','{$diario}','{$faltas}','{$asistencias}','{$total}','{$total_p}','{$campo->fecha}')";
                                     if ($this->NonQuery($sqlInserNomina)) {
                                         $countRow++;
                                     } else {
@@ -738,13 +734,12 @@ class nominas_fiscal extends AW
                             $countRow++;
                         }
                     } else {
-                        if ($total_incapacidades > 0 || $asistencias > 1 ) {
+                        if ( $asistencias > 1 ) {
                             try {
                                 $sqlInserNomina = "INSERT INTO `nomina_final_fiscal`
                                     (`id_nomina`,`id_empleado`,`nombre`,`diario`,`faltas`,`asistencias`,`total`,`total_p`,`fecha`)
                                     VALUES
-                                    ('{$this->id}','{$campo->id_empleado}','{$nombre}','{$diario}','{$faltas}','{$asistencias}','{$campo->monto_dia}',
-                                    '{$dias_incapacidades}','{$total}','{$total_p}','{$campo->fecha}')";
+                                    ('{$this->id}','{$campo->id_empleado}','{$nombre}','{$diario}','{$faltas}','{$asistencias}','{$total}','{$total_p}','{$campo->fecha}')";
                                 if ($this->NonQuery($sqlInserNomina)) {
                                     $countRow++;
                                 } else {
@@ -764,8 +759,8 @@ class nominas_fiscal extends AW
                 $bResultado = true;
             } else {
                 $rest = $res[0]->id;
-                $this->NonQuery("DELETE FROM `nominas` WHERE id = '{$res[0]->id}'");
-                $this->NonQuery("ALTER TABLE `nominas` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=$rest ");
+                $this->NonQuery("DELETE FROM `nominas_fiscal` WHERE id = '{$res[0]->id}'");
+                $this->NonQuery("ALTER TABLE `nominas_fiscal` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=$rest ");
                 $this->BeginTransaction("ROLLBACK;");
                 $bResultado = false;
             }

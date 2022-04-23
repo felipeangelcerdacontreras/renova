@@ -3,6 +3,7 @@ $_SITE_PATH = $_SERVER["DOCUMENT_ROOT"] . "/" . explode("/", $_SERVER["PHP_SELF"
 require_once($_SITE_PATH . "/app/model/usuarios.class.php");
 require_once($_SITE_PATH . "/app/model/principal.class.php");
 require_once($_SITE_PATH . "/app/model/nominas.class.php");
+require_once($_SITE_PATH . "/app/model/nominas.fiscal.class.php");
 
 
 $oConfig = new Configuracion();
@@ -16,6 +17,10 @@ $oUsuario->Informacion();
 $oNominas = new nominas(true, $_POST);
 $lstNominas = $oNominas->Listado_peticiones();
 $count = count($lstNominas);
+
+$oNominasF = new nominas_fiscal(true, $_POST);
+$lstNominasF = $oNominasF->Listado_peticiones();
+$count = $count + count($lstNominasF);
 ?>
 <script>
     $(document).ready(function(e) {
@@ -98,6 +103,25 @@ $count = count($lstNominas);
                 <h6 class="dropdown-header">
                     Solicitudes de modificacion de nomina.
                 </h6>
+                <?php if (count($lstNominasF) > 0) {
+                    foreach ($lstNominasF as $idx => $campo) {
+                        echo "
+                            <a class='dropdown-item d-flex align-items-center' href='javascript:Solictud($campo->id)'>
+                                <div class='mr-3'>
+                                    <div class='icon-circle bg-success'>
+                                        <i class='fas fa-donate text-white'></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class='small text-gray-500'>Nomina a pagar el: $campo->fecha</div>
+                                    Solicitud para modificar la nomina de: $campo->nombre
+                                </div>
+                            </a>
+                            ";
+                    }
+                } else {
+                    echo "<a class='dropdown-item text-center small text-gray-500'>Sin solicitudes de nomina fiscal</a>";
+                }?>
                 <?php if (count($lstNominas) > 0) {
                     foreach ($lstNominas as $idx => $campo) {
                         echo "

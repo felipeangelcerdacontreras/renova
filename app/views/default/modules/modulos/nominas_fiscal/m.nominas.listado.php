@@ -24,7 +24,7 @@ $lstnominas = $oNominas->Listado();
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
     <div class="card-header py-3" style="text-align:left">
-        <h5 class="m-0 font-weight-bold text-danger">nominas</h5>
+        <h5 class="m-0 font-weight-bold text-danger">nominas fiscal</h5>
         <div class="form-group" style="text-align:right">
             <input type="button" id="btnAgregar" class="btn btn-outline-danger" name="btnAgregar" value="Agregar Nomina" />
         </div>

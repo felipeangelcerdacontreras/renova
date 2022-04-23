@@ -36,7 +36,7 @@ $aPermisos = empty($oUsuarios->perfiles_id) ? array() : explode("@", $oUsuarios-
                 }
                 Alert(datos0, datos1 + "" + datos3, datos2);
                 Listado();
-                $("#myModal_nominas").modal("hide");
+                $("#myModal_nominas_fiscal").modal("hide");
             }
         });
     });
