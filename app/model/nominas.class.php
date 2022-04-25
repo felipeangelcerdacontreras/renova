@@ -481,6 +481,7 @@ class nominas extends AW
         $fecha_fin = date("Y-m-d", strtotime($fecha . "- 6 days"));
 
         if ($inicio_vacaci >= $fecha_fin  && $inicio_vacaci <= $fecha) {
+            print_r("llaga if");
             for ($i = 0; $i <= $num; $i++) {
                 $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$inicio_vacaci}', INTERVAL $i DAY), '%Y-%m-%d') as fecha";
                 $resultFecha = parent::Query($sqlFecha);
@@ -491,13 +492,17 @@ class nominas extends AW
                 if (count($res) <= 0) {
                     if ($resultFecha[0]->fecha == $fecha) {
                         $sql = "SELECT if( DAYOFWEEK(DATE_FORMAT(DATE_ADD('{$inicio_vacaci}', INTERVAL $i DAY), '%Y-%m-%d')) < 0, 0, 1) as dia";
+                        print_r($sql);
                         $result = parent::Query($sql);
                         $total_dias = $total_dias + $result[0]->dia;
+                        print_r("Total:". $total_dias );
                         break;
                     } else {
                         $sql = "SELECT if( DAYOFWEEK(DATE_FORMAT(DATE_ADD('{$inicio_vacaci}', INTERVAL $i DAY), '%Y-%m-%d')) < 0, 0, 1) as dia";
+                        print_r($sql);
                         $result = parent::Query($sql);
                         $total_dias = $total_dias + $result[0]->dia;
+                        print_r("Total:". $total_dias );
                     }
                 }
             }
@@ -1035,9 +1040,6 @@ class nominas extends AW
                     if ($campo->daysIncapa != "" && $campo->inicio_incapacida != "" && $campo->fin_incapacida != "" && $campo->NominaAdministrativa == '0') {
                         $dias_incapacidades = $this->DiasIncapacidad($campo->daysIncapa, $campo->fecha, $campo->inicio_incapacida, $campo->fin_incapacida);
                         if (!empty($campo->monto_dia) && $campo->monto_dia != "0.00") {
-                            if ($dias_incapacidades > 1) {
-                                $dias_incapacidades = $dias_incapacidades - 1;
-                            }
                             $total_incapacidades = ($dias_incapacidades * $campo->monto_dia);
                         }
                         $totalEsperado = $totalEsperado + $total_incapacidades;
