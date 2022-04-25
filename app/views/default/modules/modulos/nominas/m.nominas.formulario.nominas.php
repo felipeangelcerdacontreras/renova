@@ -40,6 +40,18 @@ $aPermisos = empty($oUsuarios->perfiles_id) ? array() : explode("@", $oUsuarios-
             }
         });
     });
+const picker = document.getElementById('fecha');
+picker.addEventListener('input', function(e){
+  var day = new Date(this.value).getUTCDay();
+  if([6,0,1,2,3,5].includes(day)){
+    e.preventDefault();
+    this.value = '';
+    Alert("", 'Solo se puede seleccionar el dia jueves("Cierre de nomina")', "warning", 1200, false);
+    $("#btnGuardar").hide();
+  } else {
+      $("#btnGuardar").show();
+  }
+});
 </script>
 <form id="frmFormulario_" name="frmFormulario_" action="app/views/default/modules/modulos/nominas/m.nominas.procesa.php" enctype="multipart/form-data" method="post" target="_self" class="form-horizontal">
     <div>

@@ -38,7 +38,7 @@ picker.addEventListener('input', function(e){
                         <div class="form-group">
                             <strong class="">Fecha de nomina:</strong>
                             <input type="date" aria-describedby="" id="fecha_genera"
-                                value="<?php echo date('Y-m-d'); ?>" min="<?php echo date('Y-m-d'); ?>" required name="fecha_genera"
+                                 min="<?php echo date('Y-m-d'); ?>" required name="fecha_genera"
                                 class="form-control" />
                         </div>
                     </div>

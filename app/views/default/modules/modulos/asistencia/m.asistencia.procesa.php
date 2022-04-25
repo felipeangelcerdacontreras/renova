@@ -18,15 +18,22 @@ if ($accion == "Sincronizar") {
     } else {
         echo "Sistema@Se han sincronizado todas las asistencias.@warning";
     }
-}   else if ($accion == "Agregar") {
+}  else if ($accion == "Agregar") {
     $oAsistencia = new asistencia(true, $_POST);
-    print_r($oAsistencia);
-    /*$res = $oAsistencia->AgregarAsis();
+    $res = $oAsistencia->AgregarAsis();
     if ($res == 1) {
         echo "Sistema@ El empleado registro asistencia, si desea corregir asigne un permiso @success";
-    } else if ($res == 2) {
-        echo "Sistema@ Asistencia justificada correctamente @success";
+    } else if ($res == 2 || $res == 3) {
+        echo "Sistema@ Asistencia agregada correctamente @success";
     } else {
         echo "Sistema@Ocurrio algun error.@warning";
-    }*/
+    }
+}    else if ($accion == "txt") {
+    $oAsistencia = new asistencia(true, $_POST);
+
+    if ($oAsistencia->GeneraTxt() === true) {
+    echo "Se ha creado la lista de inasistencias correctamente.";
+    } else {
+        echo "No se a generado la lista.";
+    }
 }

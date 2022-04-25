@@ -265,11 +265,11 @@ $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
                             <td>
                             </td>
                             <?php
-                            $periodo_inicio = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
+                            $periodo_inicio = (date("Y") - 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
                             print "<input type='hidden' id='periodo_inicio-{$contador}' name='periodo_inicio-{$contador}' value='{$periodo_inicio}' >";
-                            $periodo_fin = (date("Y") + 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . "+ 1 year"));
+                            $periodo_fin = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
                             print "<input type='hidden' id='periodo_fin-{$contador}' name='periodo_fin-{$contador}' value='{$periodo_fin}'>";
-                            $fecha_final = Carbon::parse($periodo_inicio)->addMonth(6)->format('Y-m-d');
+                            $fecha_final = Carbon::parse($periodo_fin)->addMonth(6)->format('Y-m-d');
                             print "<input type='hidden' id='fecha_final-{$contador}' name='fecha_final-{$contador}' value='{$fecha_final}'>";
                             ?>
                         </tr>
@@ -286,7 +286,7 @@ $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
                         $oVacaciones_prima = new vacaciones();
                         $oVacaciones_prima->id_empleado = $campo->id;
                         $oVacaciones_prima->ano = $campo->ano;
-                        $periodo_inicio = (date("Y")) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
+                        $periodo_inicio = (date("Y") - 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . ""));
                         $oVacaciones_prima->periodo_inicio = $periodo_inicio;
                         $var = $oVacaciones_prima->VerificarPrima();
                         $id_empleado = "";
@@ -337,10 +337,11 @@ $lstvacacionesR = $oVacaciones->Listado_vacaciones_registradas();
                                     $pago_prima = ($campo->dias * $campo->salario_diario * 0.25);
                                     print "<input type='hidden' id='pago_prima-{$contador}' name='pago_prima-$contador' value='{$pago_prima}'>";
                                     print $pago_prima;
+
                                     print "<input type='hidden' id='periodo_inicio-{$contador}' name='periodo_inicio-{$contador}' value='{$periodo_inicio}' >";
-                                    $periodo_fin = (date("Y") + 1) . "-" . date("m-d", strtotime($campo->fecha_ingreso . "+ 1 year"));
+                                    $periodo_fin = (date("Y") ) . "-" . date("m-d", strtotime($campo->fecha_ingreso . "+ 1 year"));
                                     print "<input type='hidden' id='periodo_fin-{$contador}' name='periodo_fin-{$contador}' value='{$periodo_fin}'>";
-                                    $fecha_final = Carbon::parse($periodo_inicio)->addMonth(6)->format('Y-m-d');
+                                    $fecha_final = Carbon::parse($periodo_fin)->addMonth(6)->format('Y-m-d');
                                     print "<input type='hidden' id='fecha_final-{$contador}' name='fecha_final-{$contador}' value='{$fecha_final}'>";
                                     ?>
                                 </td>

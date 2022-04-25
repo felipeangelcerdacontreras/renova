@@ -51,6 +51,9 @@ $lstDepartamentos = $oDepartamentos->Listado();
         $("#agregar").button().click(function(e) {
             Editar("", "Agregar");
         });
+        $("#txt").button().click(function(e) {
+            Editar("", "txt");
+        });
         $("#btnSincronizar").button().click(function(e) {
             if ($("#btnSincronizar").val() == 'Sincronizar') {
                 if ($("#desde").val() != "" && $("#hasta").val() != "") {
@@ -166,8 +169,34 @@ $lstDepartamentos = $oDepartamentos->Listado();
                     backdrop: "true"
                 });
                 break;
+            case 'txt':
+                var jsonDatos = {
+                    "fecha_inicial": $("#fecha_inicial").val(),
+                    "fecha_final": $("#fecha_final").val(),
+                    "accion": "txt"
+                };
+                $.ajax({
+                    data: jsonDatos,
+                    type: "POST",
+                    url: "app/views/default/modules/modulos/asistencia/m.asistencia.procesa.php",
+                    beforeSend: function() {
+                        Alert("", "Generando archivo", "success", 900, false);
+                    },
+                    success: function(datos) {
+                        if (datos == "Se ha creado la lista de inasistencias correctamente.") {
+                            Alert("Sistema", datos, "success", 900, false);
+                            $("#download").attr("href", "rh/asistencia/"+$("#fecha_final").val()+".txt");
+                            $("#download").attr("download",$("#fecha_final").val()+".txt");
+                            $("#download").get(0).click();
+                        } else {
+                            Alert("Sistema", datos, "success", 900, false);
+                        }
+                    }
+                });
+                break;
         }
     }
+   
 </script>
 
 <?php require_once('app/views/default/link.html'); ?>
@@ -226,6 +255,8 @@ $lstDepartamentos = $oDepartamentos->Listado();
                                 </div>
                             </div>
                             <div class="row" style="float: right">
+                            <a id='download'  ></a>
+                                <button class="btn btn-outline-secondary" tabindex="0" id="txt" type="button"><span>Extraer asistencia Microsip</span></button>&nbsp;
                                 <button class="btn btn-outline-success" tabindex="0" id="agregar" type="button"><span>Agregar asistencia</span></button>&nbsp;
                                 <button class="btn btn-outline-danger" tabindex="0" id="sincronizar" type="button"><span>Sincronizar Asistencia</span></button>
                             </div>

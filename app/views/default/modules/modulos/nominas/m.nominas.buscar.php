@@ -9,12 +9,7 @@ require_once($_SITE_PATH . "app/model/nominas.class.php");
 $oNominas = new nominas();
 $sesion = $_SESSION[$oNominas->NombreSesion];
 $oNominas->ValidaNivelUsuario("nominas");
-$num = 6;
-$fecha = '2022-04-22';
-$inicio_vacaci = '2022-04-22';
-$fin_vacaci = '2022-04-27';
-$vaca = $oNominas->DiasIncapacidad($num, $fecha, $inicio_vacaci, $fin_vacaci);
-print_r($vaca);
+
 $fecha_actual = date("d-m-Y");
 ?>
 <?php require_once('app/views/default/script_h.html'); ?>
@@ -37,17 +32,17 @@ $fecha_actual = date("d-m-Y");
                         Empty(elemento.id);
                         frmTrue = false;
                     } else {
-                        /*if (ValidarFechas($("#fecha").val())) {
+                        if (ValidarFechas($("#fecha").val())) {
                         frmTrue = true;
                         } else {
                             Alert("", "La fecha seleccionada debe ser mayor o igual a la actual", "warning", 900, false);
                             Empty(elemento.id);
                             frmTrue = false;
-                        }*/
+                        }
                     }
                 }
             });
-//4152313789414815
+            
             if (frmTrue == true) {
                 $.ajax({
                     data: $('#frmFormulario_').submit(),
