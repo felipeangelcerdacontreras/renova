@@ -358,6 +358,103 @@ class asistencia extends AW
         }
         return $result;
     }
+    
+    function eliminar_simbolos($string){
+ 
+        $string = trim($string);
+     
+        $string = str_replace(
+            array("\'"),
+            "'",
+            $string
+        );
+    return $string;
+    } 
+
+    public function GeneraTxt() {
+        $sqlEmpleados = "select checador, id, asistencia_on, id_horario from empleados where estatus = 1";
+        $res = $this->Query($sqlEmpleados);
+
+        $datetime1 = date_create($this->fecha_inicial);
+        $datetime2 = date_create($this->fecha_final);
+
+        $num = date_diff($datetime1, $datetime2);
+        $num = $num->days;
+
+        $texto = '';
+
+        foreach ($res as $idx => $campo) { 
+            if ($campo->asistencia_on == 1) {
+
+            } else {
+                for ($i = 0; $i <= $num; $i++) {
+                    $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$this->fecha_inicial}', INTERVAL $i DAY), '%Y-%m-%d') as fecha";
+                    $resultFecha = parent::Query($sqlFecha);
+
+                    $sqlAsistencia = "SELECT * FROM asistencia where fecha = '{$resultFecha[0]->fecha}' and id_empleado = '{$campo->id}'";
+                    $res = $this->Query($sqlAsistencia);
+
+                    $sqlVacaciones = "SELECT * FROM vacaciones WHERE inicio_vacaci >= '{$resultFecha[0]->fecha}' AND 
+                        fin_vacaci <= '{$resultFecha[0]->fecha}' AND id_empleado = '{$campo->id}'";
+                    $resVacaciones = $this->Query($sqlVacaciones);
+                    
+                    $sqlFEstivos = "SELECT * FROM festivos where fecha = '{$resultFecha[0]->fecha}'";
+                    $resFestivos = $this->Query($sqlFEstivos);
+
+                    if (count($res) <= 0 && count($resVacaciones) <= 0 && count($resFestivos) <= 0) {
+                        $sql = "SELECT if( DAYOFWEEK(DATE_FORMAT(DATE_ADD('{$this->fecha_inicial}',INTERVAL $i DAY), '%Y-%m-%d')) < 2, 0, 1) as dia";
+                        $result = parent::Query($sql);
+                        
+                        if ($result[0]->dia >= 1) {
+                            $timestamp = strtotime($resultFecha[0]->fecha); 
+                            $newDate = date("d/m/Y", $timestamp );
+
+                            $sqlDia = "SELECT  DAYOFWEEK('{$resultFecha[0]->fecha}')  as dia";
+                            $rsDia = parent::Query($sqlDia);
+
+                            if ($resultFecha[0]->fecha == $this->fecha_final) {
+                                if ($campo->id_horario == 16 && $rsDia[0]->dia == 7) {
+
+                                } else {
+                                    $texto = $texto."{$campo->checador}\t{$newDate}\tF\n";
+                                }
+                            break;
+                            } else {
+                                if ($campo->id_horario == 16 && $rsDia[0]->dia == 7) {
+
+                                } else {
+                                    $texto = $texto."{$campo->checador}\t{$newDate}\tF\n";
+                                }
+                            }
+                        } 
+                    }
+                }
+            }
+        }
+        
+        $texto = $this->eliminar_simbolos($texto);
+        
+        $dirArchivo = $this->RutaAbsoluta . "rh";
+        @mkdir($dirArchivo);
+        $dirArchivo .= "/asistencia";
+        @mkdir($dirArchivo);
+
+        $archivoDir = "rh/asistencia/{$this->fecha_final}.txt";
+        //echo $texto;
+
+        if($fp = fopen($this->RutaAbsoluta .$archivoDir, "w"))
+        {
+            if(fwrite($fp, $texto))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            fclose($fp);
+        }
+   }
 
     public function Guardar()
     {
