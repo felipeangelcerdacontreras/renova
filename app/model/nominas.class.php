@@ -1044,6 +1044,7 @@ class nominas extends AW
                     $vacaciones = 0.00;
                     if (!empty($campo->vacaciones)) {
                         $vacaciones = $campo->vacaciones;
+                        print_r($nombre." su pago es de : ".$campo->vacaciones);
                         $totalEsperado = $totalEsperado + $campo->vacaciones;
                     }
 
