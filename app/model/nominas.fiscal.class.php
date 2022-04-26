@@ -545,7 +545,6 @@ class nominas_fiscal extends AW
             LEFT JOIN (SELECT * FROM departamentos) i ON h.id_departamento = i.id
             WHERE a.id ='{$this->id}' and c.id = '35' || c.id = '7' || c.id = '26' || c.id = '90' || c.id = '85' 
             and c.estatus = '1' group by c.id";
-            print $sqlAdminist;
         $resAdmin = $this->Query($sqlAdminist);
 
         foreach ($resAdmin as $idx => $campo) {
