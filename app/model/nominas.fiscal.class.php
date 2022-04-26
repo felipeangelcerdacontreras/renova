@@ -333,7 +333,7 @@ class nominas_fiscal extends AW
         $fecha_fin = date("Y-m-d", strtotime($fecha . "- 6 days"));
 
         if ($inicio_vacaci >= $fecha_fin  && $inicio_vacaci <= $fecha) {
-            for ($i = 0; $i <= $num; $i++) {
+            for ($i = 1; $i <= $num; $i++) {
                 $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$inicio_vacaci}', INTERVAL $i DAY), '%Y-%m-%d') as fecha";
                 $resultFecha = parent::Query($sqlFecha);
 
@@ -354,7 +354,7 @@ class nominas_fiscal extends AW
                 }
             }
         } else if ($inicio_vacaci <= $fecha  && $fin_vacaci >= $fecha) {
-            for ($i = 0; $i <= $num; $i++) {
+            for ($i = 1; $i <= $num; $i++) {
                 $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$fecha_fin}', INTERVAL $i DAY), '%Y-%m-%d') as fecha";
                 $resultFecha = parent::Query($sqlFecha);
 
@@ -378,7 +378,7 @@ class nominas_fiscal extends AW
             if ($fin_vacaci >= $fecha) {
                 $fin_vacaci = $fecha;
             }
-            for ($i = 0; $i <= $num; $i++) {
+            for ($i = 1; $i <= $num; $i++) {
                 $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$fin_vacaci}', INTERVAL -$i DAY), '%Y-%m-%d') as fecha";
                 $resultFecha = parent::Query($sqlFecha);
 
@@ -659,14 +659,16 @@ class nominas_fiscal extends AW
                         if ($campo->dias_laborados > 1 && $campo->dias_laborados <= 6) {
                             $campo->dias_laborados = $campo->dias_laborados + $campo->festivos;
                             if ($campo->dias_laborados < 7) {
+                                if ($dias_vacaciones < 5 ){
                                     $campo->dias_laborados = $campo->dias_laborados + 1;
+                                }
                             }
                         } else {
                             if ($campo->dias_laborados > 1) {
                                 $campo->dias_laborados = $campo->dias_laborados + $campo->festivos;
                             }
                         }
-                        if ($campo->dias_laborados > 5 && $campo->dias_laborados < 7) {
+                        if ($campo->dias_laborados > 5 && $campo->dias_laborados < 7 && $dias_vacaciones < 7 ) {
                             $campo->dias_laborados = $campo->dias_laborados + 1;
                         }
                     } else {
@@ -690,8 +692,28 @@ class nominas_fiscal extends AW
 
                     if ($asistencias < 1) {
                         $totalEsperado = $totalEsperado + 0;
+                        if ($dias_vacaciones > 0) {
+                            $asistencias = $dias_vacaciones + 1;
+                            $faltas = (7 - $asistencias);
+                            $totalEsperado = $totalEsperado + $diario * $asistencias;    
+                        }
                     } else {
                         $totalEsperado = $totalEsperado + $diario * $asistencias;
+                    }
+
+                    if ($campo->daysIncapa != "" && $campo->inicio_incapacida != "" && $campo->fin_incapacida != "" && $campo->NominaAdministrativa == '0') {
+                        $dias_incapacidades = $this->DiasIncapacidad($campo->daysIncapa, $campo->fecha, $campo->inicio_incapacida, $campo->fin_incapacida);
+                        if (!empty($campo->monto_dia) && $campo->monto_dia != "0.00") {
+                            $total_incapacidades = ($dias_incapacidades * 0);
+                        }
+                        $totalEsperado = $totalEsperado + $total_incapacidades;
+                    }
+                    
+                    if ($dias_incapacidades > 0 && $asistencias <= 1) {
+                        $total = $dias_incapacidades * 0;
+                        $totalEsperado = $dias_incapacidades * 0; 
+                    } else  {
+                        $total = $totalEsperado;
                     }
                     $total = $totalEsperado;
 
@@ -701,13 +723,12 @@ class nominas_fiscal extends AW
 
                         $select = "SELECT * FROM nomina_final_fiscal where id_nomina = '{$this->id}' and id_empleado = '{$campo->id_empleado}'";
                         $resSelect = $this->Query($select);
-                        if ($asistencias > 1) {
+                        if ($dias_incapacidades > 0 || $asistencias > 1) {
                             if (count($resSelect) > 0) {
                                 $sql = "UPDATE `nomina_final_fiscal`
                                 SET
                                 `diario` = '{$diario}', `faltas` = '{$faltas}',
                                 `asistencias` = '{$asistencias}',
-                                `monto_incapacida` = '{$campo->monto_dia}',`dias_incapacida` = '{$dias_incapacidades}',
                                 `total` = '{$total}',`total_p` = '{$total_p}'
                                 WHERE `id_nomina` = '{$this->id}' and id_empleado = '{$campo->id_empleado}'";
                                 if ($this->NonQuery($sql)) {
@@ -734,7 +755,7 @@ class nominas_fiscal extends AW
                             $countRow++;
                         }
                     } else {
-                        if ( $asistencias > 1 ) {
+                        if ($dias_incapacidades > 0 || $asistencias > 1 ) {
                             try {
                                 $sqlInserNomina = "INSERT INTO `nomina_final_fiscal`
                                     (`id_nomina`,`id_empleado`,`nombre`,`diario`,`faltas`,`asistencias`,`total`,`total_p`,`fecha`)
