@@ -81,6 +81,9 @@ $lstEmpleados = $oEmpleados->Listado();
             if (dias_totales > 3) {
                 $("#cantidad").show();
                 $("#monto_incapacidad").addClass('obligado');
+            } else {
+                $("#cantidad").hide();
+                $("#monto_incapacidad").removeClass('obligado');
             }
 
         } else if (timeEnd != null && timeEnd < timeStart) {

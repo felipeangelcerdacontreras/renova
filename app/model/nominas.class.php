@@ -968,8 +968,11 @@ class nominas extends AW
                                 $campo->dias_laborados = $campo->dias_laborados + $campo->festivos;
                             }
                         }
-                        if ($campo->dias_laborados > 5 && $campo->dias_laborados < 7 && $dias_vacaciones < 5 ) {
+                        if ($campo->dias_laborados > 5 && $campo->dias_laborados < 7 && $dias_vacaciones < 7 ) {
                             $campo->dias_laborados = $campo->dias_laborados + 1;
+                            if ($campo->dias_laborados >= 7) {
+                                $campo->dias_laborados = 7;
+                            }
                         }
                     } else {
                         if ($campo->id_horario == "16" && $campo->dias_laborados >= 6 && $campo->NominaAdministrativa == "0") {
@@ -1007,7 +1010,7 @@ class nominas extends AW
 
                     if ($asistencias <= 1) {
                         $totalEsperado = $totalEsperado + 0;
-                        if ($dias_vacaciones > 0){
+                        if ($dias_vacaciones > 0) {
                             $asistencias = $dias_vacaciones + 1;
                             $faltas = (7 - $asistencias);
                             $totalEsperado = $totalEsperado + $diario * $asistencias;    
@@ -1044,7 +1047,6 @@ class nominas extends AW
                     $vacaciones = 0.00;
                     if (!empty($campo->vacaciones)) {
                         $vacaciones = $campo->vacaciones;
-                        print_r($nombre." su pago es de : ".$campo->vacaciones);
                         $totalEsperado = $totalEsperado + $campo->vacaciones;
                     }
 
