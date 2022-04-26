@@ -481,7 +481,7 @@ class nominas extends AW
         $fecha_fin = date("Y-m-d", strtotime($fecha . "- 6 days"));
 
         if ($inicio_vacaci >= $fecha_fin  && $inicio_vacaci <= $fecha) {
-            for ($i = 0; $i <= $num; $i++) {
+            for ($i = 1; $i <= $num; $i++) {
                 $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$inicio_vacaci}', INTERVAL $i DAY), '%Y-%m-%d') as fecha";
                 $resultFecha = parent::Query($sqlFecha);
 
@@ -492,6 +492,7 @@ class nominas extends AW
                     if ($resultFecha[0]->fecha == $fecha) {
                         $sql = "SELECT if( DAYOFWEEK(DATE_FORMAT(DATE_ADD('{$inicio_vacaci}', INTERVAL $i DAY), '%Y-%m-%d')) < 0, 0, 1) as dia";
                         print_r($sql);
+                        print "<br>";
                         $result = parent::Query($sql);
                         $total_dias = $total_dias + $result[0]->dia;
                         print_r("Total:". $total_dias );
@@ -499,15 +500,14 @@ class nominas extends AW
                     } else {
                         $sql = "SELECT if( DAYOFWEEK(DATE_FORMAT(DATE_ADD('{$inicio_vacaci}', INTERVAL $i DAY), '%Y-%m-%d')) < 0, 0, 1) as dia";
                         print_r($sql);
+                        print "<br>";
                         $result = parent::Query($sql);
                         $total_dias = $total_dias + $result[0]->dia;
-                        print_r("Total:". $total_dias );
                     }
                 }
             }
         } else if ($inicio_vacaci <= $fecha  && $fin_vacaci >= $fecha) {
-            print_r("llaga else");
-            for ($i = 0; $i <= $num; $i++) {
+            for ($i = 1; $i <= $num; $i++) {
                 $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$fecha_fin}', INTERVAL $i DAY), '%Y-%m-%d') as fecha";
                 $resultFecha = parent::Query($sqlFecha);
 
@@ -528,11 +528,10 @@ class nominas extends AW
                 }
             }
         } else if ($fin_vacaci >= $fecha_fin && $fin_vacaci <= $fecha) {
-            print_r("llaga else 2");
             if ($fin_vacaci >= $fecha) {
                 $fin_vacaci = $fecha;
             }
-            for ($i = 0; $i <= $num; $i++) {
+            for ($i = 1; $i <= $num; $i++) {
                 $sqlFecha = "SELECT DATE_FORMAT(DATE_ADD('{$fin_vacaci}', INTERVAL -$i DAY), '%Y-%m-%d') as fecha";
                 $resultFecha = parent::Query($sqlFecha);
 
