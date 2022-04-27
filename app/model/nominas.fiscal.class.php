@@ -97,7 +97,7 @@ class nominas_fiscal extends AW
 
 
         $sql = "select * from {$tabla}  where {$where}";
-
+        
         $res = parent::Query($sql);
         if (!empty($res) && !($res === NULL)) {
             foreach ($res[0] as $idx => $valor) {

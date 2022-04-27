@@ -31,7 +31,7 @@ $count = $count + count($lstNominasF);
         $.ajax({
             data: "id=" + id,
             type: "POST",
-            url: "app/views/default/notificaciones.formulario.php",
+            url: "app/views/default/notificacionesF.formulario.php",
             beforeSend: function() {
                 $("#oNominas").html(
                     '<div class="container"><center><img src="app/views/default/img/loading.gif" border="0"/><br />Cargando formulario, espere un momento por favor...</center></div>'
@@ -99,7 +99,7 @@ $count = $count + count($lstNominasF);
         $.ajax({
             data: "accion=AprovarDenegar&id=" + id + "&estatus=" + estatus,
             type: "POST",
-            url: "app/views/default/modules/modulos/nominas/m.nominas.procesa.php",
+            url: "app/views/default/modules/modulos/nominas_fiscal/m.nominas.procesa.php",
             beforeSend: function() {},
             success: function(data) {
                 console.log(data);
@@ -153,7 +153,7 @@ $count = $count + count($lstNominasF);
                 <?php if (count($lstNominasF) > 0) {
                     foreach ($lstNominasF as $idx => $campo) {
                         echo "
-                            <a class='dropdown-item d-flex align-items-center' href='javascript:Solictud($campo->id)'>
+                            <a class='dropdown-item d-flex align-items-center' href='javascript:SolictudF($campo->id)'>
                                 <div class='mr-3'>
                                     <div class='icon-circle bg-success'>
                                         <i class='fas fa-donate text-white'></i>
